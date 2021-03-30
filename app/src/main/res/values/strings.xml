@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FastIt</string>
+
+    <string name="text_fasting">Fasting</string>
+    <string name="text_plan">Plan</string>
+    <string name="text_leaderboard">LeaderBoard</string>
+    <string name="text_user_profile">User Profile</string>
 </resources>
