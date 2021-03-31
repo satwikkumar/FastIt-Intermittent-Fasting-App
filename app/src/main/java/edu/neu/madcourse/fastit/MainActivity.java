@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -71,6 +70,36 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+
+
+
+        /*
+          AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+           AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
+
+          FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+          for(int i=0;i<3;i++){
+              FastingSession fastingSession = new FastingSession();
+              fastingSession.startTime = System.currentTimeMillis();
+              fastingSession.endTime = System.currentTimeMillis() + 10;
+              fastingSession.fastCycle = FastingCycle.SIXTEEN_HOUR_CYCLE.getId();
+              fastingSession.progressImagePath = "/path/to/image/file";
+              fastingSession.weight = 100 + i;
+              fastingSessionDao.insertAll(fastingSession);
+          }
+
+           List<FastingSession> fastingSessions = fastingSessionDao.getAllSessions();
+            showSnackBar(fastingSessions.get(0).progressImagePath);
+        */
+        /*
+         * Using database, example code
+         * AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+         *  AppDatabase.class, "fastit-database").build();
+         *
+         * FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+         *  List<FastingSession> fastingSessions = fastingSessionDao.getAllSessions();
+         *
+         * */
     }
 
     /*
