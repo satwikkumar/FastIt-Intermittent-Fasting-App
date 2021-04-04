@@ -5,4 +5,7 @@
     <string name="text_plan">Plan</string>
     <string name="text_leaderboard">LeaderBoard</string>
     <string name="text_user_profile">User Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="plan_placeholder">12 hour fasting cycle</string>
 </resources>

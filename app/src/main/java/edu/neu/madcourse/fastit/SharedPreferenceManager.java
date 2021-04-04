@@ -21,6 +21,10 @@ public class SharedPreferenceManager {
         return sharedPref.getInt(key, -1);
     }
 
+    public long getLongPref(String key) {
+        return sharedPref.getLong(key, -1);
+    }
+
     public void setStringPref(String key, String value) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
@@ -30,6 +34,12 @@ public class SharedPreferenceManager {
     public void setIntPref(String key, int value) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(key, value);
+        editor.apply();
+    }
+
+    public void setLongPref(String key, long value) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(key, value);
         editor.apply();
     }
 }

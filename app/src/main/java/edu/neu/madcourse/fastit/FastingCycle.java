@@ -7,7 +7,8 @@ public enum FastingCycle {
     EIGHTEEN_HOUR_CYCLE(4),
     TWENTY_HOUR_CYCLE(5),
     TWENTY_TWO_HOUR_CYCLE(6),
-    TWENTY_FOUR_HOUR_CYCLE(7);
+    TWENTY_FOUR_HOUR_CYCLE(7),
+    INVALID_CYCLE(-1);
 
     private final int id;
 

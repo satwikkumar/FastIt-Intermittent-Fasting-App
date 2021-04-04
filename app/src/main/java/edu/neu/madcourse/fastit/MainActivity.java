@@ -3,6 +3,9 @@ package edu.neu.madcourse.fastit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textPlan;
     private TextView textLeaderboard;
     private TextView textUserProfile;
+    private Fragment planFragment;
 
     static final int REQUEST_PICTURE_CAPTURE = 1;
     private String pictureFilePath;
@@ -42,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         textPlan = (TextView) findViewById(R.id.text_plan);
         textUserProfile = (TextView) findViewById(R.id.text_user_profile);
 
+        planFragment = new PlanFragment();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
@@ -49,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         textFasting.setVisibility(View.GONE);
                         textLeaderboard.setVisibility(View.GONE);
                         textPlan.setVisibility(View.GONE);
@@ -56,15 +65,22 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_fasting:
                                 textFasting.setVisibility(View.VISIBLE);
+                                fragmentTransaction.remove(planFragment);
+                                fragmentTransaction.commit();
                                 break;
                             case R.id.action_leaderboard:
                                 textLeaderboard.setVisibility(View.VISIBLE);
+                                fragmentTransaction.remove(planFragment);
+                                fragmentTransaction.commit();
                                 break;
                             case R.id.action_plan:
-                                textPlan.setVisibility(View.VISIBLE);
+                                fragmentTransaction.replace(R.id.frameLayout, planFragment);
+                                fragmentTransaction.commit();
                                 break;
                             case R.id.action_user_profile:
                                 textUserProfile.setVisibility(View.VISIBLE);
+                                fragmentTransaction.remove(planFragment);
+                                fragmentTransaction.commit();
                                 break;
                         }
                         return false;
