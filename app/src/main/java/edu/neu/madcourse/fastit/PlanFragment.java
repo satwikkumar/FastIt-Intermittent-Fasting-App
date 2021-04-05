@@ -1,5 +1,6 @@
 package edu.neu.madcourse.fastit;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PlanFragment#newInstance} factory method to
@@ -17,7 +20,7 @@ import android.view.ViewGroup;
  */
 public class PlanFragment extends Fragment {
 
-    private  RecyclerView recyclerView;
+    private SharedPreferenceManager sharedPreferenceManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,15 +65,33 @@ public class PlanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        sharedPreferenceManager = new SharedPreferenceManager(getActivity());
         View view = inflater.inflate(R.layout.fragment_plan, container, false);
 
-        recyclerView = view.findViewById(R.id.plan_list);
+        RecyclerView recyclerView = view.findViewById(R.id.plan_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        final PlanListAdapter listAdapter = new PlanListAdapter();
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new PlanListAdapter());
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(listAdapter);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), recyclerView,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        setCurrentFastingCycle(listAdapter.fastingCycleArrayList.get(position));
+                        ((MainActivity)getActivity()).changeNavigationTab(R.id.action_fasting);
+
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
 
         return view;
+    }
+
+    private void setCurrentFastingCycle(FastingCycle fastingCycle){
+        sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_FASTING_CYCLE, fastingCycle.getId());
     }
 }

@@ -27,7 +27,7 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
             }
     }
 
-    private List<FastingCycle> fastingCycleArrayList;
+    List<FastingCycle> fastingCycleArrayList;
 
     public PlanListAdapter() {
         fastingCycleArrayList =  new ArrayList<>(Arrays.asList(FastingCycle.values()));

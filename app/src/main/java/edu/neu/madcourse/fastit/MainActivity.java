@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textUserProfile;
     private Fragment planFragment;
 
+    BottomNavigationView bottomNavigationView;
     static final int REQUEST_PICTURE_CAPTURE = 1;
     private String pictureFilePath;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -162,6 +163,11 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(findViewById(android.R.id.content), message,
                 Snackbar.LENGTH_SHORT)
                 .show();
+    }
+
+    public void changeNavigationTab(int itemId){
+        View view = bottomNavigationView.findViewById(itemId);
+        view.performClick();
     }
 
 
