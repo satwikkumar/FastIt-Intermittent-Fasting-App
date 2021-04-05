@@ -27,11 +27,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textFasting;
-    private TextView textPlan;
-    private TextView textLeaderboard;
-    private TextView textUserProfile;
     private Fragment planFragment;
+    private Fragment fastingFragment;
+    private Fragment leaderBoardFragment;
+    private Fragment userProfileFragment;
+    private Fragment activeFragment;
 
     BottomNavigationView bottomNavigationView;
     static final int REQUEST_PICTURE_CAPTURE = 1;
@@ -42,14 +42,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textFasting = (TextView) findViewById(R.id.text_fasting);
-        textLeaderboard = (TextView) findViewById(R.id.text_leaderboard);
-        textPlan = (TextView) findViewById(R.id.text_plan);
-        textUserProfile = (TextView) findViewById(R.id.text_user_profile);
-
         planFragment = new PlanFragment();
+        fastingFragment = new FastingFragment();
+        leaderBoardFragment = new LeaderboardFragment();
+        userProfileFragment = new UserProfileFragment();
+        activeFragment = fastingFragment;
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
+        fragmentManager.beginTransaction().replace(R.id.frameLayout, activeFragment).commit();
 
         bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -59,31 +58,24 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        textFasting.setVisibility(View.GONE);
-                        textLeaderboard.setVisibility(View.GONE);
-                        textPlan.setVisibility(View.GONE);
-                        textUserProfile.setVisibility(View.GONE);
                         switch (item.getItemId()) {
                             case R.id.action_fasting:
-                                textFasting.setVisibility(View.VISIBLE);
-                                fragmentTransaction.remove(planFragment);
-                                fragmentTransaction.commit();
+                                activeFragment = fastingFragment;
                                 break;
                             case R.id.action_leaderboard:
-                                textLeaderboard.setVisibility(View.VISIBLE);
-                                fragmentTransaction.remove(planFragment);
-                                fragmentTransaction.commit();
+                                activeFragment = leaderBoardFragment;
                                 break;
                             case R.id.action_plan:
-                                fragmentTransaction.replace(R.id.frameLayout, planFragment);
-                                fragmentTransaction.commit();
+                                activeFragment = planFragment;
                                 break;
                             case R.id.action_user_profile:
-                                textUserProfile.setVisibility(View.VISIBLE);
-                                fragmentTransaction.remove(planFragment);
-                                fragmentTransaction.commit();
+                                activeFragment = userProfileFragment;
                                 break;
                         }
+                        if (activeFragment != null){
+                            fragmentTransaction.replace(R.id.frameLayout, activeFragment).commit();
+                        }
+
                         return false;
                     }
                 });

@@ -78,7 +78,6 @@ public class PlanFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         setCurrentFastingCycle(listAdapter.fastingCycleArrayList.get(position));
                         ((MainActivity)getActivity()).changeNavigationTab(R.id.action_fasting);
-
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

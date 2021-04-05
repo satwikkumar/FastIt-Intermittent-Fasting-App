@@ -6,6 +6,10 @@
     <string name="text_leaderboard">LeaderBoard</string>
     <string name="text_user_profile">User Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment_1">Hello blank fragment Leaderboard</string>
+    <string name="hello_blank_fragment_2">Hello blank fragment User Profile</string>
     <string name="plan_placeholder">12 hour fasting cycle</string>
+    <string name="current_weight_placeholder">Current Weight</string>
+    <string name="start_fasting">Start Fasting</string>
+    <string name="end_fasting">End Fasting</string>
 </resources>
