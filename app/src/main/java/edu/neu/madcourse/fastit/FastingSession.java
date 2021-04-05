@@ -23,5 +23,5 @@ public class FastingSession {
     public String progressImagePath;
 
     @ColumnInfo
-    public double weight;
+    public float weight;
 }

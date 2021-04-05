@@ -12,4 +12,5 @@
     <string name="current_weight_placeholder">Current Weight</string>
     <string name="start_fasting">Start Fasting</string>
     <string name="end_fasting">End Fasting</string>
+    <string name="enter_weight">Enter Weight</string>
 </resources>

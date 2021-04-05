@@ -25,6 +25,10 @@ public class SharedPreferenceManager {
         return sharedPref.getLong(key, -1);
     }
 
+    public float getFloatPref(String key) {
+        return sharedPref.getFloat(key, -1);
+    }
+
     public void setStringPref(String key, String value) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
@@ -40,6 +44,12 @@ public class SharedPreferenceManager {
     public void setLongPref(String key, long value) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(key, value);
+        editor.apply();
+    }
+
+    public void setFloatPref(String key, float value) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(key, value);
         editor.apply();
     }
 }
