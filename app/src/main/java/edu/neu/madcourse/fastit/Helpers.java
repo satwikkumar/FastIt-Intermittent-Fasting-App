@@ -9,14 +9,13 @@ public class Helpers {
 
     public static FastingCycle getFastingCycleForNum(int num){
         switch (num){
-            case 1: return FastingCycle.TWELVE_HOUR_CYCLE;
             case 2: return FastingCycle.FOURTEEN_HOUR_CYCLE;
             case 3: return FastingCycle.SIXTEEN_HOUR_CYCLE;
             case 4: return FastingCycle.EIGHTEEN_HOUR_CYCLE;
             case 5: return FastingCycle.TWENTY_HOUR_CYCLE;
             case 6: return FastingCycle.TWENTY_TWO_HOUR_CYCLE;
             case 7: return FastingCycle.TWENTY_FOUR_HOUR_CYCLE;
-            default: return FastingCycle.INVALID_CYCLE;
+            default: return FastingCycle.TWELVE_HOUR_CYCLE;
         }
     }
 
@@ -33,9 +32,6 @@ public class Helpers {
     }
 
     public static int getHoursForCycle(FastingCycle cycle){
-        if(cycle == FastingCycle.INVALID_CYCLE){
-            return -1;
-        }
         return Integer.parseInt(getStringForFastingCycle(cycle).substring(0,2));
     }
 
@@ -44,7 +40,10 @@ public class Helpers {
     }
 
     public static boolean isFastingCompleted(long endTime, long currentTime){
-        return Arrays.equals(getHMSFromMillis(endTime), getHMSFromMillis(currentTime));
+        Date endDate = new Date(endTime);
+        Date currentDate = new Date(currentTime);
+
+        return endDate.after(currentDate) || endDate.equals(currentDate);
     }
 
     public static int[] getHMSFromMillis(long time){

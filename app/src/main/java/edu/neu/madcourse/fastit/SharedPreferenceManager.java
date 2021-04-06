@@ -52,4 +52,10 @@ public class SharedPreferenceManager {
         editor.putFloat(key, value);
         editor.apply();
     }
+
+    public void removePref(String key){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(key);
+        editor.apply();
+    }
 }

@@ -24,4 +24,7 @@ public class FastingSession {
 
     @ColumnInfo
     public float weight;
+
+    @ColumnInfo
+    public boolean hasCompletedSession;
 }

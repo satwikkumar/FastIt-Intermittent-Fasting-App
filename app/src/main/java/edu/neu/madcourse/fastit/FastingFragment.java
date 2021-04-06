@@ -56,20 +56,26 @@ public class FastingFragment extends Fragment {
         String cycleText = Helpers.getStringForFastingCycle(cycle);
         fastingCycleTextView.setText(cycleText);
 
-        Button endFastingButton = view.findViewById(R.id.end_fasting);
+        final Button endFastingButton = view.findViewById(R.id.end_fasting);
+        endFastingButton.setEnabled(sharedPreferenceManager.getLongPref(
+                Constants.SP_CURRENT_FASTING_START_TIME) != -1);
         endFastingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
+                loadAdditionalActivity();
                 resetTimer();
             }
         });
 
-        Button startFastingButton = view.findViewById(R.id.start_fasting);
+        final Button startFastingButton = view.findViewById(R.id.start_fasting);
         startFastingButton.setEnabled(sharedPreferenceManager.getLongPref(
                 Constants.SP_CURRENT_FASTING_START_TIME) == -1);
         startFastingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                endFastingButton.setEnabled(true);
+                startFastingButton.setEnabled(false);
                 long currentTime = System.currentTimeMillis();
                 sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_START_TIME,
                         currentTime);
@@ -126,14 +132,6 @@ public class FastingFragment extends Fragment {
         }
 
         TimerRunning = true;
-
-
-    }
-
-    private void pauseTimer() {
-        countDownTimer.cancel();
-        TimerRunning = false;
-        progressBar.clearAnimation();
     }
 
     private void resetTimer() {

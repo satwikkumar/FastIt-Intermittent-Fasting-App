@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.Manifest;
 import android.app.Activity;
@@ -38,6 +39,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AdditionalInfoActivity extends Activity {
@@ -51,6 +53,13 @@ public class AdditionalInfoActivity extends Activity {
     private ImageView previewImage;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveData();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_info);
@@ -62,13 +71,13 @@ public class AdditionalInfoActivity extends Activity {
     }
 
     public void dismissActivity(View view){
-        saveData();
         finish();
     }
 
     private void saveData(){
         sharedPreferenceManager.setFloatPref(Constants.SP_CURRENT_WEIGHT, weight);
         sharedPreferenceManager.setStringPref(Constants.SP_CURRENT_IMAGE_PATH, filePath);
+        saveSessionObject();
     }
 
     public void addNewUser(){
@@ -200,7 +209,6 @@ public class AdditionalInfoActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PICTURE_CAPTURE && resultCode == RESULT_OK) {
-            Uri photoURI = Uri.parse(filePath);
             Bitmap bitmap = BitmapFactory.decodeFile(filePath);
             previewImage.setImageBitmap(bitmap);
         }
@@ -210,5 +218,38 @@ public class AdditionalInfoActivity extends Activity {
         Snackbar.make(findViewById(android.R.id.content), message,
                 Snackbar.LENGTH_SHORT)
                 .show();
+    }
+
+    private FastingSession getSessionObject(){
+        FastingSession session = new FastingSession();
+        int cycle = sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE);
+        session.fastCycle = cycle > 0 ? cycle : 1 ;
+        session.startTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
+        session.endTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_END_TIME);
+        session.weight = weight;
+        session.progressImagePath = filePath;
+        long estEndTime = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
+        session.hasCompletedSession = Helpers.isFastingCompleted(session.endTime, estEndTime);
+
+        return session;
+    }
+
+    private void clearPrefs(){
+        sharedPreferenceManager.removePref(Constants.SP_CURRENT_FASTING_CYCLE);
+        sharedPreferenceManager.removePref(Constants.SP_CURRENT_FASTING_START_TIME);
+        sharedPreferenceManager.removePref(Constants.SP_CURRENT_FASTING_END_TIME);
+        sharedPreferenceManager.removePref(Constants.SP_ESTIMATED_FASTING_END_TIME);
+        sharedPreferenceManager.removePref(Constants.SP_CURRENT_IMAGE_PATH);
+        sharedPreferenceManager.removePref(Constants.SP_CURRENT_WEIGHT);
+    }
+
+    private void saveSessionObject(){
+        FastingSession session = getSessionObject();
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
+        FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+        fastingSessionDao.insertAll(session);
+
+        clearPrefs();
     }
 }
