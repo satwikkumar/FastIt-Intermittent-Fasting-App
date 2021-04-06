@@ -1,5 +1,10 @@
 package edu.neu.madcourse.fastit;
 
+import android.text.format.DateUtils;
+
+import java.util.Arrays;
+import java.util.Date;
+
 public class Helpers {
 
     public static FastingCycle getFastingCycleForNum(int num){
@@ -17,14 +22,36 @@ public class Helpers {
 
     public static String getStringForFastingCycle(FastingCycle cycle){
         switch (cycle.getId()){
-            case 1: return "12 hour cycle";
             case 2: return "14 hour cycle";
             case 3: return "16 hour cycle";
             case 4: return "18 hour cycle";
             case 5: return "20 hour cycle";
             case 6: return "22 hour cycle";
             case 7: return "24 hour cycle";
-            default: return "";
+            default: return "12 hour cycle";
         }
+    }
+
+    public static int getHoursForCycle(FastingCycle cycle){
+        if(cycle == FastingCycle.INVALID_CYCLE){
+            return -1;
+        }
+        return Integer.parseInt(getStringForFastingCycle(cycle).substring(0,2));
+    }
+
+    public static long getEndTimeFromStartTime(long startTime, FastingCycle cycle){
+        return startTime + 3600 * 1000 * getHoursForCycle(cycle);
+    }
+
+    public static boolean isFastingCompleted(long endTime, long currentTime){
+        return Arrays.equals(getHMSFromMillis(endTime), getHMSFromMillis(currentTime));
+    }
+
+    public static int[] getHMSFromMillis(long time){
+        int hours = (int) (time / (1000 * 60 * 60)) % 24;
+        int minutes = (int) (time / (1000 * 60)) % 60;
+        int seconds = (int) (time / 1000) % 60;
+
+        return new int[]{hours, minutes, seconds};
     }
 }
