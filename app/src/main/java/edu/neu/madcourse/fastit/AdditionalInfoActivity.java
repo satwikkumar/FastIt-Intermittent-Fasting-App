@@ -1,15 +1,18 @@
 package edu.neu.madcourse.fastit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -139,9 +142,30 @@ public class AdditionalInfoActivity extends Activity {
     }
 
     public void launchCamera(View view){
-        takeImage();
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, 10);
+        } else {
+            takeImage();
+        }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 10)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                takeImage();
+            }
+            else
+            {
+                Toast.makeText(this, "Camera permission denied!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     private void takeImage(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
