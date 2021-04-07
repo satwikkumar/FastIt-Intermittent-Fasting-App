@@ -82,7 +82,7 @@ public class FastingFragment extends Fragment {
                 FastingCycle cycle = Helpers.getFastingCycleForNum(
                         sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
                 sharedPreferenceManager.setLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME,
-                        Helpers.getEndTimeFromStartTime(currentTime, cycle));
+                        (long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
                 startTimer();
             }
         });

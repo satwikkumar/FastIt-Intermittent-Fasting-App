@@ -9,6 +9,7 @@ public class Helpers {
 
     public static FastingCycle getFastingCycleForNum(int num){
         switch (num){
+            case 11: return FastingCycle.THIRTY_SECOND_CYCLE;
             case 2: return FastingCycle.FOURTEEN_HOUR_CYCLE;
             case 3: return FastingCycle.SIXTEEN_HOUR_CYCLE;
             case 4: return FastingCycle.EIGHTEEN_HOUR_CYCLE;
@@ -21,6 +22,7 @@ public class Helpers {
 
     public static String getStringForFastingCycle(FastingCycle cycle){
         switch (cycle.getId()){
+            case 11: return ".008 second cycle";
             case 2: return "14 hour cycle";
             case 3: return "16 hour cycle";
             case 4: return "18 hour cycle";
@@ -31,11 +33,11 @@ public class Helpers {
         }
     }
 
-    public static int getHoursForCycle(FastingCycle cycle){
-        return Integer.parseInt(getStringForFastingCycle(cycle).substring(0,2));
+    public static double getHoursForCycle(FastingCycle cycle){
+        return Double.parseDouble(getStringForFastingCycle(cycle).split(" ")[0]);
     }
 
-    public static long getEndTimeFromStartTime(long startTime, FastingCycle cycle){
+    public static double getEndTimeFromStartTime(long startTime, FastingCycle cycle){
         return startTime + 3600 * 1000 * getHoursForCycle(cycle);
     }
 

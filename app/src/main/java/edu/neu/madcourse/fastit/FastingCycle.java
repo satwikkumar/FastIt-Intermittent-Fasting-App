@@ -1,6 +1,7 @@
 package edu.neu.madcourse.fastit;
 
 public enum FastingCycle {
+    THIRTY_SECOND_CYCLE(11),
     TWELVE_HOUR_CYCLE(1),
     FOURTEEN_HOUR_CYCLE(2),
     SIXTEEN_HOUR_CYCLE(3),
