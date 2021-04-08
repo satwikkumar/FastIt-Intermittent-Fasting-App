@@ -77,7 +77,11 @@ public class PlanFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), recyclerView,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         setCurrentFastingCycle(listAdapter.fastingCycleArrayList.get(position));
-                        ((MainActivity)getActivity()).changeNavigationTab(R.id.action_fasting);
+                        Intent intent = new Intent(getActivity(), PlanningInfoActivity.class);
+                        String cycleText = Helpers.getStringForFastingCycle(listAdapter.fastingCycleArrayList.get(position));
+                        intent.putExtra("Plan", cycleText);
+                        startActivity(intent);
+                        //((MainActivity)getActivity()).changeNavigationTab(R.id.action_fasting);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -93,4 +97,5 @@ public class PlanFragment extends Fragment {
     private void setCurrentFastingCycle(FastingCycle fastingCycle){
         sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_FASTING_CYCLE, fastingCycle.getId());
     }
+
 }

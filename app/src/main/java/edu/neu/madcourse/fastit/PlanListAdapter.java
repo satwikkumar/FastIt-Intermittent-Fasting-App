@@ -15,15 +15,25 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView getTextView() {
-                return textView;
+        public TextView getTextView1() {
+                return textView1;
             }
+        public TextView getTextView2() {
+            return textView2;
+        }
+        public TextView getTextView3() {
+            return textView3;
+        }
 
-        private final TextView textView;
+        private final TextView textView1;
+        private final TextView textView2;
+        private final TextView textView3;
 
             public ViewHolder(View view) {
                 super(view);
-                textView = view.findViewById(R.id.plan_list_item);
+                textView1 = view.findViewById(R.id.plan_list_item_1);
+                textView2 = view.findViewById(R.id.plan_list_item_2);
+                textView3 = view.findViewById(R.id.plan_list_item_3);
             }
     }
 
@@ -45,7 +55,10 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull PlanListAdapter.ViewHolder holder, int position) {
-        holder.getTextView().setText(Helpers.getStringForFastingCycle(fastingCycleArrayList.get(position)));
+        String cycle = Helpers.getStringForFastingCycle(fastingCycleArrayList.get(position));
+        holder.getTextView1().setText(cycle);
+        holder.getTextView2().setText("\u2022 " + cycle.split("-")[0] + " hours fasting");
+        holder.getTextView3().setText("\u2022 " + cycle.split("-")[1] + " hours eating period");
     }
 
     @Override

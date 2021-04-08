@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="100dp"
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
-        android:layout_marginTop="100dp"
-        android:layout_margin="5dp"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp">
 
-<TextView
-    android:id="@+id/plan_list_item"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"/>
-</androidx.cardview.widget.CardView>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/plan_list_item_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:textStyle="bold"
+            android:text="ghgh"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            />
+        <TextView
+            android:id="@+id/plan_list_item_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:text="hjhj"
+            android:layout_marginTop="45dp"
+            android:layout_marginStart="20dp"/>
+        <TextView
+            android:id="@+id/plan_list_item_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:text="ghghgh"
+            android:layout_marginTop="65dp"
+            android:layout_marginStart="20dp"/>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
