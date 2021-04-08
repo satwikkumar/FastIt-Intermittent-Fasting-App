@@ -1,4 +1,4 @@
-package edu.neu.madcourse.fastit;
+package edu.neu.madcourse.fastit.plan;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import edu.neu.madcourse.fastit.R;
 
 public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHolder>{
 
@@ -37,7 +39,7 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
             }
     }
 
-    List<FastingCycle> fastingCycleArrayList;
+    public List<FastingCycle> fastingCycleArrayList;
 
     public PlanListAdapter() {
         fastingCycleArrayList =  new ArrayList<>(Arrays.asList(FastingCycle.values()));

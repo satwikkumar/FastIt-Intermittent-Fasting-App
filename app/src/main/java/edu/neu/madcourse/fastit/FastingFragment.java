@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import edu.neu.madcourse.fastit.plan.FastingCycle;
+import edu.neu.madcourse.fastit.plan.Helpers;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class FastingFragment extends Fragment {

@@ -1,4 +1,4 @@
-package edu.neu.madcourse.fastit;
+package edu.neu.madcourse.fastit.plan;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.snackbar.Snackbar;
+import edu.neu.madcourse.fastit.Constants;
+import edu.neu.madcourse.fastit.R;
+import edu.neu.madcourse.fastit.RecyclerItemClickListener;
+import edu.neu.madcourse.fastit.SharedPreferenceManager;
 
 /**
  * A simple {@link Fragment} subclass.
