@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import edu.neu.madcourse.fastit.plan.PlanFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private Fragment planFragment;

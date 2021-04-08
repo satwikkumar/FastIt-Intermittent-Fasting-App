@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import edu.neu.madcourse.fastit.plan.FastingCycle;
+import edu.neu.madcourse.fastit.plan.Helpers;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class FastingFragment extends Fragment {

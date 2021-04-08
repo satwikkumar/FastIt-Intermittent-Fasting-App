@@ -1,4 +1,4 @@
-package edu.neu.madcourse.fastit;
+package edu.neu.madcourse.fastit.plan;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import edu.neu.madcourse.fastit.MainActivity;
+import edu.neu.madcourse.fastit.R;
 
 public class PlanningInfoActivity extends Activity {
 

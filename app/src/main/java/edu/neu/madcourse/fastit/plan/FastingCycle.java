@@ -1,4 +1,4 @@
-package edu.neu.madcourse.fastit;
+package edu.neu.madcourse.fastit.plan;
 
 public enum FastingCycle {
     THIRTY_SECOND_CYCLE(0),

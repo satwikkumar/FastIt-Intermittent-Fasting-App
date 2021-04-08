@@ -1,6 +1,8 @@
-package edu.neu.madcourse.fastit;
+package edu.neu.madcourse.fastit.plan;
 
 import java.util.Date;
+
+import edu.neu.madcourse.fastit.plan.FastingCycle;
 
 public class Helpers {
 
