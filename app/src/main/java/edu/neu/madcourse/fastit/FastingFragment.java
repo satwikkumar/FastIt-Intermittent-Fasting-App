@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
@@ -83,6 +86,7 @@ public class FastingFragment extends Fragment {
                         sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
                 sharedPreferenceManager.setLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME,
                         (long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
+                updateCurrentStreak();
                 startTimer();
             }
         });
@@ -155,5 +159,25 @@ public class FastingFragment extends Fragment {
         // do some validations
         Intent intent = new Intent(getActivity(), AdditionalInfoActivity.class);
         startActivity(intent);
+    }
+
+    private void updateCurrentStreak(){
+        int currentStreak = sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_LONGEST_STREAK);
+        if (currentStreak == -1){
+            currentStreak = 1;
+        } else {
+            AppDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
+                    AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
+            FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+            List<FastingSession> sessionList = fastingSessionDao.getAllSessions();
+            FastingSession lastKnownSession = sessionList.get(sessionList.size()-1);
+            long currentStartTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
+            if (currentStartTime - lastKnownSession.endTime <= TimeUnit.HOURS.toMillis(24)){
+                currentStreak ++;
+            } else {
+                currentStreak = 1;
+            }
+        }
+        sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_LONGEST_STREAK, currentStreak);
     }
 }
