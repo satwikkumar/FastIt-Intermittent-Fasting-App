@@ -25,11 +25,10 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/current_fasting_cycle_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
+                    android:layout_height="wrap_content" />
+                <include layout="@layout/content_timer" />
                 <Button
                     android:id="@+id/start_fasting"
                     android:layout_width="wrap_content"
@@ -46,13 +45,6 @@
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:backgroundTint="@color/colorAccent"/>
 
-                <EditText
-                    android:id="@+id/edit_weight_fasting_screen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="@string/current_weight_placeholder" />
             </LinearLayout>
         </ScrollView>
 

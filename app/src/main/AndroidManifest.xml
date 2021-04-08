@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.fastit">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -39,8 +36,13 @@
 
 
         <activity android:name=".AdditionalInfoActivity"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait">
 
+        </activity>
+
+        <activity android:name=".plan.PlanningInfoActivity"
+            android:theme="@style/NoActionBar">
         </activity>
 
         <provider

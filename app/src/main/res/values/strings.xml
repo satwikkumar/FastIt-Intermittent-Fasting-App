@@ -15,5 +15,7 @@
     <string name="enter_weight">Enter Weight</string>
     <string name="facebook_app_id">286132033095762</string>
     <string name="fb_login_protocol_scheme">fb286132033095762</string>
-
+    <string name="take_picture">Take Picture</string>
+    <string name="your_picture"><u>Your Picture</u></string>
+    <string name="weight"><u>Weight</u></string>
 </resources>

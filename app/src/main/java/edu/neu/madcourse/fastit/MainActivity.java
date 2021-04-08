@@ -7,13 +7,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +26,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import edu.neu.madcourse.fastit.plan.PlanFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +45,61 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
+        } else {
+            initializeApp();
+        }
 
+
+
+
+        /*
+          AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+           AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
+
+          FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+          for(int i=0;i<3;i++){
+              FastingSession fastingSession = new FastingSession();
+              fastingSession.startTime = System.currentTimeMillis();
+              fastingSession.endTime = System.currentTimeMillis() + 10;
+              fastingSession.fastCycle = FastingCycle.SIXTEEN_HOUR_CYCLE.getId();
+              fastingSession.progressImagePath = "/path/to/image/file";
+              fastingSession.weight = 100 + i;
+              fastingSessionDao.insertAll(fastingSession);
+          }
+
+           List<FastingSession> fastingSessions = fastingSessionDao.getAllSessions();
+            showSnackBar(fastingSessions.get(0).progressImagePath);
+        */
+        /*
+         * Using database, example code
+         * AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+         *  AppDatabase.class, "fastit-database").build();
+         *
+         * FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+         *  List<FastingSession> fastingSessions = fastingSessionDao.getAllSessions();
+         *
+         * */
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 101)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                initializeApp();
+            }
+            else
+            {
+                Toast.makeText(this, "File access permission denied!", Toast.LENGTH_LONG).show();
+                finishAndRemoveTask();
+            }
+        }
+    }
+    private void initializeApp(){
         planFragment = new PlanFragment();
         fastingFragment = new FastingFragment();
         leaderBoardFragment = new LeaderboardFragment();
@@ -78,38 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 });
-
-
-
-        /*
-          AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-           AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
-
-          FastingSessionDao fastingSessionDao = db.fastingSessionDao();
-          for(int i=0;i<3;i++){
-              FastingSession fastingSession = new FastingSession();
-              fastingSession.startTime = System.currentTimeMillis();
-              fastingSession.endTime = System.currentTimeMillis() + 10;
-              fastingSession.fastCycle = FastingCycle.SIXTEEN_HOUR_CYCLE.getId();
-              fastingSession.progressImagePath = "/path/to/image/file";
-              fastingSession.weight = 100 + i;
-              fastingSessionDao.insertAll(fastingSession);
-          }
-
-           List<FastingSession> fastingSessions = fastingSessionDao.getAllSessions();
-            showSnackBar(fastingSessions.get(0).progressImagePath);
-        */
-        /*
-         * Using database, example code
-         * AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-         *  AppDatabase.class, "fastit-database").build();
-         *
-         * FastingSessionDao fastingSessionDao = db.fastingSessionDao();
-         *  List<FastingSession> fastingSessions = fastingSessionDao.getAllSessions();
-         *
-         * */
     }
-
     /*
     * Picture taking and saving logic
     * */
