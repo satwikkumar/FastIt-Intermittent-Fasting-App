@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,6 +44,7 @@ public class AdditionalInfoActivity extends Activity {
     private String filePath;
     private TextView weightTextView;
     private ImageView previewImage;
+    private TextView fastingTime;
 
     @Override
     protected void onDestroy() {
@@ -57,9 +59,26 @@ public class AdditionalInfoActivity extends Activity {
         setContentView(R.layout.activity_additional_info);
         sharedPreferenceManager = new SharedPreferenceManager(this);
         sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
+        long start = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
         weightTextView = findViewById(R.id.weight_text);
+        fastingTime = findViewById(R.id.fasting_time);
         weightTextView.setText(weight+" kg");
         previewImage = findViewById(R.id.image_preview);
+        long fTime = (new Date()).getTime() - (new Date(start)).getTime();
+        long h = fTime/(3600000);
+        long m = (fTime-(h*3600000))/(60*1000);
+        long s = (fTime-(h*3600000)-(m*60000))/1000;
+        String time = "";
+        if(h>0){
+            time+=h+" hours ";
+        }
+        if(m>0){
+            time+=m+" mins ";
+        }
+        if(s>0){
+            time+=s+" secs";
+        }
+        fastingTime.setText(time);
     }
 
     public void dismissActivity(View view){
@@ -80,11 +99,13 @@ public class AdditionalInfoActivity extends Activity {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final TextView dotText = new TextView(this);
-        dotText.setText("dot");
+        dotText.setText("[.]");
+        dotText.setTypeface(null, Typeface.BOLD);
         dotText.setGravity(Gravity.CENTER);
 
         final TextView kgText = new TextView(this);
         kgText.setText("KG");
+        kgText.setTypeface(null, Typeface.BOLD);
         dotText.setGravity(Gravity.CENTER);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(

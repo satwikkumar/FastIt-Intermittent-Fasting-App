@@ -14,4 +14,6 @@
     <string name="end_fasting">End Fasting</string>
     <string name="enter_weight">Enter Weight</string>
     <string name="take_picture">Take Picture</string>
+    <string name="your_picture"><u>Your Picture</u></string>
+    <string name="weight"><u>Weight</u></string>
 </resources>

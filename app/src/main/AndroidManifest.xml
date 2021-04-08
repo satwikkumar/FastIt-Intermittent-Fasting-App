@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".AdditionalInfoActivity"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait">
 
         </activity>
 
