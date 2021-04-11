@@ -30,10 +30,10 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:9.1.0'
 
 
-    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     def room_version = "2.2.6"
 
