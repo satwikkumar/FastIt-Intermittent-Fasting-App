@@ -41,7 +41,7 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="START FASTING"
+        android:text="SELECT THIS PLAN"
         android:padding="10dp"
         android:background="@drawable/button_background_green"
         app:layout_constraintStart_toStartOf="parent"
