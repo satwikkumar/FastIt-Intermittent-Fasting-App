@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import edu.neu.madcourse.fastit.plan.FastingCycle;
+import edu.neu.madcourse.fastit.plan.Helpers;
 import edu.neu.madcourse.fastit.plan.PlanFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment activeFragment;
 
     BottomNavigationView bottomNavigationView;
+    private SharedPreferenceManager sharedPreferenceManager;
     static final int REQUEST_PICTURE_CAPTURE = 1;
     private String pictureFilePath;
 
@@ -100,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void initializeApp(){
+        sharedPreferenceManager = new SharedPreferenceManager(this);
+
         planFragment = new PlanFragment();
         fastingFragment = new FastingFragment();
         leaderBoardFragment = new LeaderboardFragment();
@@ -137,51 +142,12 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 });
-    }
-    /*
-    * Picture taking and saving logic
-    * */
-    private void takeImage(){
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File pictureFile = null;
-            try {
-                pictureFile = getImageFile();
-            } catch (IOException ex) {
-                showSnackBar("Photo file can't be created, please try again");
-                return;
-            }
-            if (pictureFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.fastit.android.fileprovider",
-                        pictureFile);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
-            }
+        FastingCycle cycle = Helpers.getFastingCycleForNum(sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
+        if (cycle != FastingCycle.INVALID_CYCLE){
+            changeNavigationTab(R.id.action_fasting);
+        } else {
+            changeNavigationTab(R.id.action_plan);
         }
-    }
-
-    private File getImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(new Date());
-        String pictureFile = "FASTIT_" + timeStamp;
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(pictureFile,  ".jpg", storageDir);
-        pictureFilePath = image.getAbsolutePath();
-        return image;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICTURE_CAPTURE && resultCode == RESULT_OK) {
-            showSnackBar("Photo created and saved succesfully");
-        }
-    }
-
-    private void showSnackBar(String message) {
-        Snackbar.make(findViewById(android.R.id.content), message,
-                Snackbar.LENGTH_SHORT)
-                .show();
     }
 
     public void changeNavigationTab(int itemId){
