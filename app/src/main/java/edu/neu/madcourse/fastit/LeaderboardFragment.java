@@ -12,11 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONArray;
 
 import java.util.Arrays;
 
@@ -87,15 +93,25 @@ public class LeaderboardFragment extends Fragment {
         info = (TextView) root.findViewById(R.id.text);
         loginButton = (LoginButton) root.findViewById(R.id.login_button);
          callbackManager = CallbackManager.Factory.create();
+         loginButton.setPermissions("user_friends");
 
         loginButton.setFragment(this);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
                 Log.v("navyasai",loginResult.getAccessToken().getUserId());
-                //info.setText("User Id " + loginResult.getAccessToken().getUserId());
                 System.out.println(loginResult.getAccessToken().getUserId());
                 Log.v("navyasai",loginResult.getAccessToken().getToken());
+
+                String userId = loginResult.getAccessToken().getUserId();
+                GraphRequest request = GraphRequest.newMyFriendsRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONArrayCallback() {
+                    @Override
+                    public void onCompleted(JSONArray objects, GraphResponse response) {
+                        Log.d("navyasai", objects.toString());
+                    }
+                });
+                request.executeAsync();
             }
 
             @Override
