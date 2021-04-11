@@ -18,4 +18,6 @@
     <string name="take_picture">Take Picture</string>
     <string name="your_picture"><u>Your Picture</u></string>
     <string name="weight"><u>Weight</u></string>
+    <string name="save_session">SAVE SESSION</string>
+    <string name="delete_session">DELETE SESSION</string>
 </resources>

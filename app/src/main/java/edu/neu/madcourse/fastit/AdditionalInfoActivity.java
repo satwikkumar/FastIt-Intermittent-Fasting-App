@@ -49,8 +49,7 @@ public class AdditionalInfoActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        saveData();
-
+        clearPrefs();
     }
 
     @Override
@@ -82,6 +81,7 @@ public class AdditionalInfoActivity extends Activity {
     }
 
     public void dismissActivity(View view){
+        saveData();
         finish();
     }
 
@@ -116,6 +116,7 @@ public class AdditionalInfoActivity extends Activity {
         final NumberPicker numberPicker = new NumberPicker(this);
         numberPicker.setMaxValue(200);
         numberPicker.setMinValue(1);
+        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         numberPicker.setWrapSelectorWheel(true);
         numberPicker.setGravity(Gravity.CENTER);
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -248,7 +249,6 @@ public class AdditionalInfoActivity extends Activity {
     }
 
     private void clearPrefs(){
-        sharedPreferenceManager.removePref(Constants.SP_CURRENT_FASTING_CYCLE);
         sharedPreferenceManager.removePref(Constants.SP_CURRENT_FASTING_START_TIME);
         sharedPreferenceManager.removePref(Constants.SP_CURRENT_FASTING_END_TIME);
         sharedPreferenceManager.removePref(Constants.SP_ESTIMATED_FASTING_END_TIME);
@@ -262,7 +262,14 @@ public class AdditionalInfoActivity extends Activity {
                 AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
         FastingSessionDao fastingSessionDao = db.fastingSessionDao();
         fastingSessionDao.insertAll(session);
+    }
 
-        clearPrefs();
+    public void saveSession(View view){
+        saveData();
+        finish();
+    }
+
+    public void deleteSession(View view){
+        finish();
     }
 }

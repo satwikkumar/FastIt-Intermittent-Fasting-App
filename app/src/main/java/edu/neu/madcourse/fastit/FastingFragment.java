@@ -28,6 +28,8 @@ public class FastingFragment extends Fragment {
     private boolean TimerRunning;
     private TextView timerText;
     private SharedPreferenceManager sharedPreferenceManager;
+    private  Button endFastingButton;
+    private  Button startFastingButton;
 
     private long timeRemainingInMillis = 0;
 
@@ -61,19 +63,24 @@ public class FastingFragment extends Fragment {
         String cycleText = Helpers.getStringForFastingCycle(cycle);
         fastingCycleTextView.setText("Current Plan: " + cycleText);
 
-        final Button endFastingButton = view.findViewById(R.id.end_fasting);
+
+        endFastingButton = view.findViewById(R.id.end_fasting);
         endFastingButton.setEnabled(sharedPreferenceManager.getLongPref(
                 Constants.SP_CURRENT_FASTING_START_TIME) != -1);
         endFastingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(startFastingButton != null){
+                    startFastingButton.setEnabled(true);
+                }
+                endFastingButton.setEnabled(false);
                 sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
                 loadAdditionalActivity();
                 resetTimer();
             }
         });
 
-        final Button startFastingButton = view.findViewById(R.id.start_fasting);
+        startFastingButton = view.findViewById(R.id.start_fasting);
         startFastingButton.setEnabled(sharedPreferenceManager.getLongPref(
                 Constants.SP_CURRENT_FASTING_START_TIME) == -1);
         startFastingButton.setOnClickListener(new View.OnClickListener(){
@@ -159,7 +166,7 @@ public class FastingFragment extends Fragment {
     }
 
     private void loadAdditionalActivity(){
-        // do some validations
+
         Intent intent = new Intent(getActivity(), AdditionalInfoActivity.class);
         startActivity(intent);
     }
