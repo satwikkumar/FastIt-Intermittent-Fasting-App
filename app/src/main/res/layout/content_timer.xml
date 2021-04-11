@@ -6,24 +6,48 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/fragment_fasting">
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Time Remaining"
+    android:textColor="@color/colorPrimaryDark"
+    android:textStyle="bold"
+    android:textSize="18sp"
+    android:layout_marginBottom="10dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/timer_text"
+    />
     <TextView
         android:id="@+id/timer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="10:00"
-        android:textSize="50sp"
+        android:textSize="40sp"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End time \nTomorrow 12:25 pm"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timer_text"
+        />
+
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/circular_progress_bar"
         style="@style/Widget.MaterialProgressBar.ProgressBar"
-        android:minWidth="356dp"
-        android:minHeight="356dp"
+        android:minWidth="350dp"
+        android:minHeight="350dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

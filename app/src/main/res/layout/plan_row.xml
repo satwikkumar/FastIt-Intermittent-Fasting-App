@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:gravity="start"
             android:textStyle="bold"
-            android:text="ghgh"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
             android:layout_marginStart="10dp"
             />
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="start"
-            android:text="hjhj"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_marginTop="45dp"
             android:layout_marginStart="20dp"/>
         <TextView
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="start"
-            android:text="ghghgh"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_marginTop="65dp"
             android:layout_marginStart="20dp"/>
     </androidx.cardview.widget.CardView>

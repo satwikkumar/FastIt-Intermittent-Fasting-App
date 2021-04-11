@@ -5,12 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FastingFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You are fasting!"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"/>
+    </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,29 +33,62 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+                <include layout="@layout/content_timer" />
 
                 <TextView
                     android:id="@+id/current_fasting_cycle_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <include layout="@layout/content_timer" />
+                    android:layout_height="wrap_content"
+                    android:text="65-67"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_gravity="center"/>
                 <Button
                     android:id="@+id/start_fasting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/start_fasting" />
+                    android:padding="15dp"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:text="@string/start_fasting"
+                    android:background="@drawable/button_background_green"/>
 
                 <Button
                     android:id="@+id/end_fasting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/end_fasting"
-                    android:gravity="center"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:backgroundTint="@color/colorAccent"/>
-
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:paddingStart="58dp"
+                    android:paddingEnd="58dp"
+                    android:background="@drawable/button_background_red"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:text="Why drink water during fasting?\nYour body consists of about 60% water.
+    You hydrate the most from water-dense foods like fruits and vegetables when you eat.
+    \n\nSo you are easy to be dehydrated during fasting. Because there may be a full day between meals,
+    it's critical to drink water in the fasting period."/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:paddingBottom="85dp"
+                    android:text="During Fasting\n\n• Drink water or herbal tea to stay hydrated.
+\n\n• Keep your mind off food.\n\n• Avoid high-intensity workouts."/>
             </LinearLayout>
         </ScrollView>
 

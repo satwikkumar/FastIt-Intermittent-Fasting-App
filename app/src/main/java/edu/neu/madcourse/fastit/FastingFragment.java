@@ -59,7 +59,7 @@ public class FastingFragment extends Fragment {
         FastingCycle cycle = Helpers.getFastingCycleForNum(
                 sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
         String cycleText = Helpers.getStringForFastingCycle(cycle);
-        fastingCycleTextView.setText(cycleText);
+        fastingCycleTextView.setText("Current Plan: " + cycleText);
 
         final Button endFastingButton = view.findViewById(R.id.end_fasting);
         endFastingButton.setEnabled(sharedPreferenceManager.getLongPref(
@@ -95,6 +95,7 @@ public class FastingFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.circular_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setShowProgressBackground(true);
         progressBar.setProgress(0);
         progressBar.setMax(100);
 
