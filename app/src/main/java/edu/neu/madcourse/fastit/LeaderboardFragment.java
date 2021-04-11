@@ -24,6 +24,7 @@ import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -39,6 +40,8 @@ public class LeaderboardFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String EMAIL = "email";
     CallbackManager callbackManager;
+    ArrayList<String> permissions = new ArrayList();
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -51,7 +54,8 @@ public class LeaderboardFragment extends Fragment {
     public LeaderboardFragment() {
         // Required empty public constructor
 
-
+        permissions.add("email");
+        permissions.add("user_friends");
     }
 
     /**
@@ -93,7 +97,7 @@ public class LeaderboardFragment extends Fragment {
         info = (TextView) root.findViewById(R.id.text);
         loginButton = (LoginButton) root.findViewById(R.id.login_button);
          callbackManager = CallbackManager.Factory.create();
-         loginButton.setPermissions("user_friends");
+         loginButton.setPermissions(permissions);
 
         loginButton.setFragment(this);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
