@@ -136,16 +136,21 @@ public class UserProfileFragment extends Fragment {
         FastingSessionDao fastingSessionDao = db.fastingSessionDao();
         List<FastingSession> sessionList = fastingSessionDao.getAllSessions();
         ArrayList<Entry> weights = new ArrayList<>();
+        float lastKnownWeight = 0f;
         if(sessionList.get(0).weight < 0){
-          weights.add(new Entry(0, 0));
+            weights.add(new Entry(0, 0));
+        } else {
+            lastKnownWeight = sessionList.get(0).weight;
+            weights.add(new Entry(0,lastKnownWeight));
         }
 
         for(int i=1;i<sessionList.size();i++){
             float currentWeight = sessionList.get(i).weight;
-            if(currentWeight < 0){
-                weights.add(new Entry(i, sessionList.get(i-1).weight));
+            if(currentWeight <= 0){
+                weights.add(new Entry(i, lastKnownWeight));
             } else {
                 weights.add(new Entry(i,currentWeight));
+                lastKnownWeight = currentWeight;
             }
         }
         return weights;
