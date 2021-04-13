@@ -1,14 +1,19 @@
 package edu.neu.madcourse.fastit;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,9 +28,12 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.neu.madcourse.fastit.plan.Helpers;
+
 public class UserProfileFragment extends Fragment {
 
     private LineChart chart;
+    private List<FastingSession> sessionList;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -34,6 +42,30 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fetchData();
+    }
+
+    private void loadCardData(View view){
+        FastingSession session = sessionList.get(sessionList.size()-1);
+        CardView cardView = view.findViewById(R.id.history_cardView);
+        TextView startDate = cardView.findViewById(R.id.start_time);
+        startDate.setText(Helpers.getFormattedDate(session.startTime));
+        TextView endDate = cardView.findViewById(R.id.end_time);
+        endDate.setText(Helpers.getFormattedDate(session.endTime));
+        TextView sessionCompleted = cardView.findViewById(R.id.completed_status);
+        sessionCompleted.setText(session.hasCompletedSession ? "Yes" : "No");
+        TextView weight = cardView.findViewById(R.id.weight_value);
+        weight.setText(session.weight+" KG");
+        ImageView imageView = cardView.findViewById(R.id.session_thumbnail);
+        Bitmap bitmap = BitmapFactory.decodeFile(session.progressImagePath);
+        imageView.setImageBitmap(bitmap);
+    }
+
+    private void fetchData(){
+        AppDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
+                AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
+        FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+        sessionList = fastingSessionDao.getAllSessions();
     }
 
     @Override
@@ -81,6 +113,8 @@ public class UserProfileFragment extends Fragment {
         chart.invalidate();
 
         setData();
+
+        loadCardData(view);
 
         return view;
     }
@@ -131,10 +165,7 @@ public class UserProfileFragment extends Fragment {
     }
 
     private ArrayList<Entry> getWeightsForGraph(){
-        AppDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
-                AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
-        FastingSessionDao fastingSessionDao = db.fastingSessionDao();
-        List<FastingSession> sessionList = fastingSessionDao.getAllSessions();
+
         ArrayList<Entry> weights = new ArrayList<>();
         float lastKnownWeight = 0f;
         if(sessionList.get(0).weight < 0){

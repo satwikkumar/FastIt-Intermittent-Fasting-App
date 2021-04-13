@@ -1,5 +1,7 @@
 package edu.neu.madcourse.fastit.plan;
 
+import android.text.format.DateFormat;
+
 import java.util.Date;
 
 import edu.neu.madcourse.fastit.plan.FastingCycle;
@@ -51,5 +53,9 @@ public class Helpers {
         int seconds = (int) (time / 1000) % 60;
 
         return new int[]{hours, minutes, seconds};
+    }
+
+    public static String getFormattedDate(long time){
+        return DateFormat.format("MM/dd hh:mm a", new Date(time)).toString();
     }
 }
