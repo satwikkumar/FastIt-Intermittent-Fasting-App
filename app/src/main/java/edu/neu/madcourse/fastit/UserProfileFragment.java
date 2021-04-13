@@ -1,5 +1,6 @@
 package edu.neu.madcourse.fastit;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -48,6 +49,13 @@ public class UserProfileFragment extends Fragment {
     private void loadCardData(View view){
         FastingSession session = sessionList.get(sessionList.size()-1);
         CardView cardView = view.findViewById(R.id.history_cardView);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DetailedHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
         TextView startDate = cardView.findViewById(R.id.start_time);
         startDate.setText(Helpers.getFormattedDate(session.startTime));
         TextView endDate = cardView.findViewById(R.id.end_time);
