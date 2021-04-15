@@ -54,7 +54,7 @@
         android:id="@+id/lay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#87CEEB"
+        android:background="#9CFAF5"
         android:layout_marginStart="20dp"
         android:orientation="vertical"
         android:layout_marginEnd="20dp"
@@ -64,6 +64,7 @@
             android:id="@+id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
             android:text="\nPREPARE FOR FASTING"
             android:textStyle="bold"
             android:gravity="center"/>
@@ -72,6 +73,8 @@
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
             android:text="\n• Eat enough protein, such as meat, fish, tofu and nuts.
                           \n\n• Eat high-fiber foods, such as nuts, beans, fruits and vegetables.
                           \n\n• Drink plenty of water.

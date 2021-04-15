@@ -1,18 +1,23 @@
 package edu.neu.madcourse.fastit;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import android.os.CountDownTimer;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +35,8 @@ public class FastingFragment extends Fragment {
     private SharedPreferenceManager sharedPreferenceManager;
     private  Button endFastingButton;
     private  Button startFastingButton;
-
+    private TextView status;
+    private TextView end_time;
     private long timeRemainingInMillis = 0;
 
     public FastingFragment() {
@@ -63,7 +69,8 @@ public class FastingFragment extends Fragment {
         String cycleText = Helpers.getStringForFastingCycle(cycle);
         fastingCycleTextView.setText("Current Plan: " + cycleText);
 
-
+        status = view.findViewById(R.id.status);
+        end_time = view.findViewById(R.id.end_time);
         endFastingButton = view.findViewById(R.id.end_fasting);
         endFastingButton.setEnabled(sharedPreferenceManager.getLongPref(
                 Constants.SP_CURRENT_FASTING_START_TIME) != -1);
@@ -76,6 +83,9 @@ public class FastingFragment extends Fragment {
                 endFastingButton.setEnabled(false);
                 sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
                 loadAdditionalActivity();
+                status.setText("You are not fasting!");
+                status.setTextColor(Color.parseColor("#ffa500"));
+                end_time.setVisibility(View.INVISIBLE);
                 resetTimer();
             }
         });
@@ -88,6 +98,8 @@ public class FastingFragment extends Fragment {
             public void onClick(View v) {
                 endFastingButton.setEnabled(true);
                 startFastingButton.setEnabled(false);
+                status.setText("You are fasting!");
+                status.setTextColor(Color.parseColor("#00ff00"));
                 long currentTime = System.currentTimeMillis();
                 sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_START_TIME,
                         currentTime);
@@ -95,6 +107,15 @@ public class FastingFragment extends Fragment {
                         sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
                 sharedPreferenceManager.setLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME,
                         (long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
+                Date endDate = new Date((long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
+                Date startDate = new Date();
+                String endTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(endDate);
+                String endDay = "Today, ";
+                if(startDate.getDate()!=endDate.getDate()){
+                    endDay = "Tomorrow, ";
+                }
+                end_time.setText(Html.fromHtml("End Time<br><b>"+endDay+" "+endTime+"</b>"));
+                end_time.setVisibility(View.VISIBLE);
                 updateCurrentStreak();
                 startTimer();
             }

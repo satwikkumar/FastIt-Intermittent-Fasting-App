@@ -34,12 +34,13 @@
         android:id="@+id/end_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End time \nTomorrow 12:25 pm"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
+        android:gravity="center"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/timer_text"
         />
 
