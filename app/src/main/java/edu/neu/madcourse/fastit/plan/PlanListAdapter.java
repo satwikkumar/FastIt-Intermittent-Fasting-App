@@ -59,6 +59,7 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
     public void onBindViewHolder(@NonNull PlanListAdapter.ViewHolder holder, int position) {
         String cycle = Helpers.getStringForFastingCycle(fastingCycleArrayList.get(position));
         holder.getTextView1().setText(cycle);
+        if(!cycle.contains("-")) return;
         holder.getTextView2().setText("\u2022 " + cycle.split("-")[0] + " hours fasting");
         holder.getTextView3().setText("\u2022 " + cycle.split("-")[1] + " hours eating period");
     }

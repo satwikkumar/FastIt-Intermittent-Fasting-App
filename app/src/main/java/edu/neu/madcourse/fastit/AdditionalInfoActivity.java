@@ -57,13 +57,13 @@ public class AdditionalInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_info);
         sharedPreferenceManager = new SharedPreferenceManager(this);
-        sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
         long start = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
+        long end = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_END_TIME);
         weightTextView = findViewById(R.id.weight_text);
         fastingTime = findViewById(R.id.fasting_time);
         weightTextView.setText(weight+" kg");
         previewImage = findViewById(R.id.image_preview);
-        long fTime = (new Date()).getTime() - (new Date(start)).getTime();
+        long fTime = (new Date(end)).getTime() - (new Date(start)).getTime();
         long h = fTime/(3600000);
         long m = (fTime-(h*3600000))/(60*1000);
         long s = (fTime-(h*3600000)-(m*60000))/1000;

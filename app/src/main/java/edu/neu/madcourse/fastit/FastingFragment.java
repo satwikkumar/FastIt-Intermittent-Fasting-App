@@ -1,5 +1,7 @@
 package edu.neu.madcourse.fastit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -77,16 +79,7 @@ public class FastingFragment extends Fragment {
         endFastingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(startFastingButton != null){
-                    startFastingButton.setEnabled(true);
-                }
-                endFastingButton.setEnabled(false);
-                sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
-                loadAdditionalActivity();
-                status.setText("You are not fasting!");
-                status.setTextColor(Color.parseColor("#ffa500"));
-                end_time.setVisibility(View.INVISIBLE);
-                resetTimer();
+                showAlert();
             }
         });
 
@@ -135,6 +128,58 @@ public class FastingFragment extends Fragment {
         return view;
     }
 
+    private void showAlert(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Are you sure you want to end the current fasting session?");
+        long currentStartTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
+        long approxEndTime = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
+        long diff = (new Date().getTime() - currentStartTime)*100/(approxEndTime - currentStartTime);
+        String text = "You have completed " + diff + "% of the session. "+ (100-diff);
+        text+="% is remaining!";
+        builder.setMessage(text);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
+                endCurrentCycle();
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void endCurrentCycle(){
+        if(startFastingButton != null){
+            startFastingButton.setEnabled(true);
+        }
+        endFastingButton.setEnabled(false);
+        loadAdditionalActivity();
+        status.setText("You are not fasting!");
+        status.setTextColor(Color.parseColor("#ffa500"));
+        end_time.setVisibility(View.INVISIBLE);
+        resetTimer();
+    }
+
+    private void showCompleted(){
+        long end = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
+        sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, end);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("You have completed the fasting cycle!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              endCurrentCycle();
+            }
+        });
+        builder.show();
+    }
+
     private void startTimer() {
         final long startTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
         if (startTime > 0) {
@@ -158,6 +203,7 @@ public class FastingFragment extends Fragment {
                 public void onFinish() {
                     TimerRunning = false;
                     progressBar.setProgress(100);
+                    showCompleted();
                 }
             }.start();
         }

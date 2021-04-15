@@ -22,7 +22,7 @@ public class Helpers {
 
     public static String getStringForFastingCycle(FastingCycle cycle){
         switch (cycle.getId()){
-            case 0: return ".008-Test";
+            case 0: return "30 Seconds Test";
             case 1: return "14-10";
             case 2: return "16-8";
             case 3: return "18-6";
@@ -33,6 +33,9 @@ public class Helpers {
     }
 
     public static double getHoursForCycle(FastingCycle cycle){
+        if(!getStringForFastingCycle(cycle).contains("-")){
+            return Double.parseDouble("0.0084");
+        }
         return Double.parseDouble(getStringForFastingCycle(cycle).split("-")[0]);
     }
 
