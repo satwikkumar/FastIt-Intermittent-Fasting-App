@@ -43,7 +43,7 @@ public class FbFriend implements Comparable<FbFriend> {
 
     @Override
     public int compareTo(FbFriend friend) {
-        return friend.userId.compareTo(this.userId);
+        return Integer.compare(friend.score, this.score);
     }
 
     @Override

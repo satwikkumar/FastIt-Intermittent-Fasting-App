@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 public class LeaderboardFragment extends Fragment {
-    private static final String EMAIL = "email";
     CallbackManager callbackManager;
     ArrayList<String> permissions = new ArrayList();
 
@@ -89,28 +86,102 @@ public class LeaderboardFragment extends Fragment {
         loginButton.setPermissions(permissions);
 
         loginButton.setFragment(this);
+
+        initFBLoginCallbacks();
+
+        if(preferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_TOKEN).length() > 0){
+            fetchFriendList();
+            fetchUserName();
+            textViewLogin.setVisibility(View.INVISIBLE);
+        }
+
+        return root;
+
+    }
+
+    private void initFBLoginCallbacks(){
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 userName.setVisibility(View.VISIBLE);
                 textViewLogin.setVisibility(View.INVISIBLE);
-                //loginResult.getAccessToken().getUserId();
-                //Log.v("navyasaiporanki", );
                 preferenceManager.setStringPref(Constants.SP_LOGGED_IN_USER_TOKEN, loginResult.getAccessToken().getUserId());
             }
 
             @Override
-            public void onCancel() {
-               Log.v("navyasai","came hre");
-            }
+            public void onCancel() { }
 
             @Override
-            public void onError(FacebookException error) {
-                Log.v("navyasai","came here");
-            }
+            public void onError(FacebookException error) { }
         });
-        return root;
 
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                if (currentAccessToken == null) {
+                    myAdapter.clear();
+                    textViewLogin.setVisibility(View.VISIBLE);
+                    userName.setVisibility(View.INVISIBLE);
+                    preferenceManager.removePref(Constants.SP_LOGGED_IN_USER_TOKEN);
+                    preferenceManager.removePref(Constants.SP_LOGGED_IN_USER_NAME);
+                    LoginManager.getInstance().logOut();
+                }
+            }
+        };
+    }
+
+    private void fetchFriendList(){
+        GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONArrayCallback() {
+
+                    @Override
+                    public void onCompleted(JSONArray objects, GraphResponse response) {
+                        ArrayList<FbFriend> fbFriends = new ArrayList<>();
+                        for(int i=0; i< objects.length();i++) {
+                            try {
+                                JSONObject object = objects.getJSONObject(i);
+                                FbFriend f = new FbFriend(object.getString("name"),
+                                        0,
+                                        object.getString("id"));
+                                fbFriends.add(f);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        int streak = preferenceManager.getIntPref(Constants.SP_CURRENT_LONGEST_STREAK);
+                        FbFriend currentUser = new FbFriend(preferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_NAME),
+                                Math.max(streak, 0),
+                                preferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_TOKEN));
+                        fbFriends.add(currentUser);
+
+                        fetchScoresForUsers(fbFriends);
+                    }
+                });
+        request.executeAsync();
+    }
+
+    private void fetchUserName(){
+        GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            String name= object.getString("name");
+                            userName.setText(name);
+                            preferenceManager.setStringPref(Constants.SP_LOGGED_IN_USER_NAME, name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        graphRequest.executeAsync();
+    }
+
+    private void updateLeaderboardUI(ArrayList<FbFriend> friendList){
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        myAdapter = new LeaderboardAdapter(friendList);
+        recyclerView.setAdapter(myAdapter);
     }
 
 
@@ -127,71 +198,17 @@ public class LeaderboardFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
 
-        GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONArrayCallback() {
+        fetchFriendList();
 
-                    @Override
-                    public void onCompleted(JSONArray objects, GraphResponse response) {
-                        ArrayList<FbFriend> fbFriends = new ArrayList<>();
-                        for(int i=0; i< objects.length();i++) {
-                            try {
-                                JSONObject object = objects.getJSONObject(i);
-                                FbFriend f = new FbFriend(object.getString("name"), 60, "12312312");
-                                f.setUserId(object.getString("id"));
-                                fbFriends.add(f);
-                                Log.v("navyasai", object.getString("id"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        FbFriend f=  new FbFriend("Ravi", 70, "abc");
-                        f.setUserId("ddfd");
-                        fbFriends.add(f);
-
-                        FbFriend fb1 = new FbFriend("user 1",90, "user1ID");
-                        FbFriend fb2 = new FbFriend("user 2",90, "user2ID");
-                        fbFriends.add(fb1);
-                        fbFriends.add(fb2);
-
-                        layoutManager = new LinearLayoutManager(getActivity());
-                        recyclerView.setLayoutManager(layoutManager);
-                        myAdapter = new LeaderboardAdapter(fbFriends);
-                        recyclerView.setAdapter(myAdapter);
-                        fetchScoresForUsers(fbFriends);
-                    }
-                });
-        request.executeAsync();
-
-        GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                try {
-                    String name= object.getString("name");
-                    userName.setText(name);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        graphRequest.executeAsync();
-
-            accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if (currentAccessToken == null) {
-                    myAdapter.clear();
-                    textViewLogin.setVisibility(View.VISIBLE);
-                    userName.setVisibility(View.INVISIBLE);
-                    LoginManager.getInstance().logOut();
-                }
-            }
-        };
+        fetchUserName();
     }
 
-    private void fetchScoresForUsers(final List<FbFriend> friendList){
+    private void fetchScoresForUsers(final ArrayList<FbFriend> friendList){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("users");
+        final ArrayList<FbFriend> refList = new ArrayList<>(friendList); /// list for users who have
+        // not yet started using the app but have logged in to the application
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -202,16 +219,20 @@ public class LeaderboardFragment extends Fragment {
                             int index = friendList.indexOf(friend);
                             FbFriend local = friendList.remove(index);
                             local.setScore(friend.getScore());
-                            if(friend.getName().length() == 0){
-                                friend.setName(local.getName());
-                                myRef.removeEventListener(this);
-                                myRef.child(friend.getUserId()).setValue(local);
-                            }
                             friendList.add(local);
+                            refList.remove(local);
                         }
                     }
                 }
+
+                // adding the above said user to firebase
+                for(FbFriend friend : refList){
+                    friend.setScore(0);
+                    myRef.child(friend.getUserId()).setValue(friend);
+                }
                 myRef.removeEventListener(this);
+                Collections.sort(friendList);
+                updateLeaderboardUI(friendList);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
