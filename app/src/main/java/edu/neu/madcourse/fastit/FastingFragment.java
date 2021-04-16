@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -256,5 +259,17 @@ public class FastingFragment extends Fragment {
             }
         }
         sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_LONGEST_STREAK, currentStreak);
+        String userToken = sharedPreferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_TOKEN);
+        if(userToken.length() > 0){
+          String userName = sharedPreferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_NAME);
+          updateCurrentStreakInFirebase(currentStreak, userToken, userName);
+        }
+    }
+
+    private void updateCurrentStreakInFirebase(int currentStreak, String userID, String name){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("users/"+userID);
+        FbFriend friend = new FbFriend(name, currentStreak, userID);
+        myRef.setValue(friend);
     }
 }

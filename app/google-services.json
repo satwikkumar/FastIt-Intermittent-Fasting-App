@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "884135635653",
+    "firebase_url": "https://fastit-8575a-default-rtdb.firebaseio.com",
+    "project_id": "fastit-8575a",
+    "storage_bucket": "fastit-8575a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884135635653:android:7a46a5c642171732c75eac",
+        "android_client_info": {
+          "package_name": "edu.neu.madcourse.fastit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884135635653-82r657mp54ds8hrrme1k273e6egrtibf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD75QNipBCXnoRk-ASBDxIthl22x1N_iZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884135635653-82r657mp54ds8hrrme1k273e6egrtibf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

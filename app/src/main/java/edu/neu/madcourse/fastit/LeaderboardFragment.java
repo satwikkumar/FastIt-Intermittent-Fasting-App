@@ -3,6 +3,7 @@ package edu.neu.madcourse.fastit;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,10 +22,14 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,25 +37,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LeaderboardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LeaderboardFragment extends Fragment {
-
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String EMAIL = "email";
     CallbackManager callbackManager;
     ArrayList<String> permissions = new ArrayList();
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
 
     //textbox and login
@@ -66,45 +58,18 @@ public class LeaderboardFragment extends Fragment {
     AccessTokenTracker accessTokenTracker;
     SharedPreferenceManager preferenceManager;
     public LeaderboardFragment() {
-        // Required empty public constructor
-
         permissions.add("email");
         permissions.add("user_friends");
-
-        //initialize items
-
-
-
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LeaderboardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static LeaderboardFragment newInstance(String param1, String param2) {
         LeaderboardFragment fragment = new LeaderboardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
     }
 
     @Override
@@ -155,6 +120,8 @@ public class LeaderboardFragment extends Fragment {
         accessTokenTracker.stopTracking();
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -169,7 +136,7 @@ public class LeaderboardFragment extends Fragment {
                         for(int i=0; i< objects.length();i++) {
                             try {
                                 JSONObject object = objects.getJSONObject(i);
-                                FbFriend f = new FbFriend(object.getString("name"), 60);
+                                FbFriend f = new FbFriend(object.getString("name"), 60, "12312312");
                                 f.setUserId(object.getString("id"));
                                 fbFriends.add(f);
                                 Log.v("navyasai", object.getString("id"));
@@ -177,13 +144,20 @@ public class LeaderboardFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                        FbFriend f=  new FbFriend("Ravi", 70);
+                        FbFriend f=  new FbFriend("Ravi", 70, "abc");
                         f.setUserId("ddfd");
                         fbFriends.add(f);
+
+                        FbFriend fb1 = new FbFriend("user 1",90, "user1ID");
+                        FbFriend fb2 = new FbFriend("user 2",90, "user2ID");
+                        fbFriends.add(fb1);
+                        fbFriends.add(fb2);
+
                         layoutManager = new LinearLayoutManager(getActivity());
                         recyclerView.setLayoutManager(layoutManager);
                         myAdapter = new LeaderboardAdapter(fbFriends);
                         recyclerView.setAdapter(myAdapter);
+                        fetchScoresForUsers(fbFriends);
                     }
                 });
         request.executeAsync();
@@ -213,7 +187,34 @@ public class LeaderboardFragment extends Fragment {
                 }
             }
         };
+    }
 
-
+    private void fetchScoresForUsers(final List<FbFriend> friendList){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("users");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()){
+                    for (DataSnapshot data : dataSnapshot.getChildren()){
+                        FbFriend friend = data.getValue(FbFriend.class);
+                        if (friendList.contains(friend)){
+                            int index = friendList.indexOf(friend);
+                            FbFriend local = friendList.remove(index);
+                            local.setScore(friend.getScore());
+                            if(friend.getName().length() == 0){
+                                friend.setName(local.getName());
+                                myRef.removeEventListener(this);
+                                myRef.child(friend.getUserId()).setValue(local);
+                            }
+                            friendList.add(local);
+                        }
+                    }
+                }
+                myRef.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
     }
 }
