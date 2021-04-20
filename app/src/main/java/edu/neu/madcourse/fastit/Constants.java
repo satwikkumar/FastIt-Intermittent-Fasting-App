@@ -8,4 +8,6 @@ public class Constants {
     public static String SP_ESTIMATED_FASTING_END_TIME = "estimated_fasting_end_time";
     public static String SP_CURRENT_FASTING_START_TIME = "current_fasting_start_time";
     public static String SP_CURRENT_LONGEST_STREAK = "current_longest_streak";
+    public static String SP_LOGGED_IN_USER_TOKEN="logged_in_user_token";
+    public static String SP_LOGGED_IN_USER_NAME="logged_in_user_name";
 }
