@@ -11,6 +11,7 @@ import androidx.room.Room;
 
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class FastingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferenceManager = new SharedPreferenceManager(getActivity());
+
     }
 
     @Override
@@ -64,7 +66,8 @@ public class FastingFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_fasting, container, false);
-
+        timerText = view.findViewById(R.id.timer_text);
+        progressBar = view.findViewById(R.id.circular_progress_bar);
         TextView fastingCycleTextView = view.findViewById(R.id.current_fasting_cycle_text);
         FastingCycle cycle = Helpers.getFastingCycleForNum(
                 sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
@@ -113,18 +116,33 @@ public class FastingFragment extends Fragment {
                 startTimer();
             }
         });
-
-        progressBar = view.findViewById(R.id.circular_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setShowProgressBackground(true);
         progressBar.setProgress(0);
         progressBar.setMax(100);
 
-        timerText = view.findViewById(R.id.timer_text);
-
         startTimer();
 
-
+        if(sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME) != -1 && sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME) != -1){
+            Long end1 = (long) Helpers.getEndTimeFromStartTime(sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME),cycle);
+            Long end2 = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
+            Log.e("Timing",end1.equals(end2)+"");
+            Log.e("SavedTiming",sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME)+"");
+            if(!end1.equals(end2)){
+                status.setText("You are not fasting!");
+                status.setTextColor(Color.parseColor("#ffa500"));
+                end_time.setVisibility(View.INVISIBLE);
+                resetTimer();
+                if(startFastingButton != null){
+                    startFastingButton.setEnabled(true);
+                }
+                endFastingButton.setEnabled(false);
+                end_time.setVisibility(View.INVISIBLE);
+            } else {
+                status.setText("You are fasting!");
+                status.setTextColor(Color.parseColor("#00ff00"));
+            }
+        }
         return view;
     }
 
@@ -134,8 +152,11 @@ public class FastingFragment extends Fragment {
         long currentStartTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
         long approxEndTime = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
         long diff = (new Date().getTime() - currentStartTime)*100/(approxEndTime - currentStartTime);
-        String text = "You have completed " + diff + "% of the session. "+ (100-diff);
-        text+="% is remaining!";
+        String text = "You have completed " + diff + "% of the session. ";
+        if(100-diff<51){
+            text+="Only ";
+        }
+        text+=(100-diff) + "% is remaining!";
         builder.setMessage(text);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
@@ -247,12 +268,14 @@ public class FastingFragment extends Fragment {
                     AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
             FastingSessionDao fastingSessionDao = db.fastingSessionDao();
             List<FastingSession> sessionList = fastingSessionDao.getAllSessions();
-            FastingSession lastKnownSession = sessionList.get(sessionList.size()-1);
-            long currentStartTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
-            if (currentStartTime - lastKnownSession.endTime <= TimeUnit.HOURS.toMillis(24)){
-                currentStreak ++;
-            } else {
-                currentStreak = 1;
+            if(sessionList.size()>0) {
+                FastingSession lastKnownSession = sessionList.get(sessionList.size() - 1);
+                long currentStartTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
+                if (currentStartTime - lastKnownSession.endTime <= TimeUnit.HOURS.toMillis(24)) {
+                    currentStreak++;
+                } else {
+                    currentStreak = 1;
+                }
             }
         }
         sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_LONGEST_STREAK, currentStreak);
