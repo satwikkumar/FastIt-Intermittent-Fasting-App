@@ -1,11 +1,21 @@
 package edu.neu.madcourse.fastit;
 
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
@@ -16,13 +26,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +53,10 @@ public class FastingFragment extends Fragment {
     private  Button startFastingButton;
     private TextView status;
     private TextView end_time;
+    private String NOTIFICATION_ID = "";
+
     private long timeRemainingInMillis = 0;
+    private AlarmManager alarmManager;
 
     public FastingFragment() {
         // Required empty public constructor
@@ -116,6 +129,15 @@ public class FastingFragment extends Fragment {
                 end_time.setText(Html.fromHtml("End Time<br><b>"+endDay+" "+endTime+"</b>"));
                 end_time.setVisibility(View.VISIBLE);
                 updateCurrentStreak();
+                queueNotifications("Half way to end fasting",
+                        Helpers.getTimeFromPercentage(System.currentTimeMillis(),
+                                endDate.getTime(), 50.0));
+                queueNotifications("Almost there to end fasting",
+                        Helpers.getTimeFromPercentage(System.currentTimeMillis(),
+                                endDate.getTime(), 75.0));
+                queueNotifications("Completed fasting",
+                        Helpers.getTimeFromPercentage(System.currentTimeMillis(),
+                                endDate.getTime(), 100.0));
                 startTimer();
             }
         });
@@ -146,6 +168,8 @@ public class FastingFragment extends Fragment {
                 status.setTextColor(Color.parseColor("#00ff00"));
             }
         }
+
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context. ALARM_SERVICE ) ;
         return view;
     }
 
@@ -294,5 +318,45 @@ public class FastingFragment extends Fragment {
         final DatabaseReference myRef = database.getReference("users/"+userID);
         FbFriend friend = new FbFriend(name, currentStreak, userID);
         myRef.setValue(friend);
+    }
+
+    private void queueNotifications(String text, long estimatedEndTime){
+            CharSequence name = getActivity().getString(R.string.app_name);
+            String description = getActivity().getString(R.string.app_name);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(estimatedEndTime+"", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(channel);
+
+            Notification notification1 = getNotification("Reminder", text, estimatedEndTime);
+
+            Intent notificationIntent = new Intent( getActivity(), NotificationPublisher. class ) ;
+            notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID , estimatedEndTime) ;
+            notificationIntent.putExtra(NotificationPublisher.NOTIFICATION , notification1) ;
+            PendingIntent pendingIntent = PendingIntent. getBroadcast ( getActivity(), (int)estimatedEndTime , notificationIntent , PendingIntent.FLAG_IMMUTABLE ) ;
+
+
+            assert alarmManager != null;
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MILLISECOND, (int)estimatedEndTime);
+            alarmManager.set(AlarmManager.RTC_WAKEUP ,  calendar.getTimeInMillis() , pendingIntent) ;
+    }
+
+    private Notification getNotification(String title, String text, long time){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MILLISECOND, (int)time);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), time+"")
+                .setSmallIcon(R.drawable.ic_fasting)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setWhen(calendar.getTimeInMillis());
+
+
+        return notificationBuilder.build();
     }
 }
