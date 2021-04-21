@@ -91,7 +91,7 @@ public class AdditionalInfoActivity extends Activity {
         saveSessionObject();
     }
 
-    public void addNewUser(){
+    public void addNewUserWeight(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter current weight");
 
@@ -137,6 +137,7 @@ public class AdditionalInfoActivity extends Activity {
         layout.addView(dotText);
         layout.addView(decimalPicker);
         layout.addView(kgText);
+        layout.setGravity(Gravity.CENTER);
 
 
         builder.setView(layout);
@@ -161,7 +162,7 @@ public class AdditionalInfoActivity extends Activity {
     }
 
     public void enterWeightPressed(View view){
-        addNewUser();
+        addNewUserWeight();
     }
 
     public void launchCamera(View view){
