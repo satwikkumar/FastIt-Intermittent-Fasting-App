@@ -5,15 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserProfileFragment">
-
+    <TextView
+        android:id="@+id/history_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_gravity="center_horizontal"
+        />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="35dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/history_cardView"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="250dp"
             android:layout_margin="10dp"
             android:paddingTop="30dp"
             android:paddingBottom="30dp"
@@ -27,19 +38,19 @@
                 android:id="@+id/start_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
-                android:text="@string/start_text"
+                android:layout_marginTop="10dp"
                 android:gravity="start"
+                android:text="@string/start_text"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/start_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/start_text"
+                android:layout_marginEnd="20dp"
                 android:gravity="end"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -49,17 +60,17 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="45dp"
-                android:text="@string/end_text"
                 android:gravity="start"
+                android:text="@string/end_text"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/end_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="45dp"
-                android:text="@string/end_text"
+                android:layout_marginEnd="20dp"
                 android:gravity="end"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -69,17 +80,17 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="90dp"
-                android:text="@string/session_completed"
                 android:gravity="start"
+                android:text="@string/session_completed"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/completed_status"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="90dp"
-                android:text="@string/session_completed"
+                android:layout_marginEnd="20dp"
                 android:gravity="end"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -89,18 +100,28 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="120dp"
-                android:text="@string/weight_text"
                 android:gravity="start"
+                android:text="@string/weight_text"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/weight_value"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="120dp"
-                android:text="@string/weight_text"
+                android:layout_marginEnd="20dp"
                 android:gravity="end"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="150dp"
+                android:text="Picture: "
+                android:gravity="start"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark" />
 
             <ImageView
@@ -108,19 +129,31 @@
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="180dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="start"
                 app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
 
         </androidx.cardview.widget.CardView>
-
+<TextView
+    android:id="@+id/weight_info"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Weight Tracker (KG)"
+    android:layout_marginBottom="10dp"
+    android:textStyle="bold"
+    android:textSize="16sp"
+    android:textColor="@color/colorPrimaryDark"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/weight_chart"
+    />
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/weight_chart"
             android:layout_width="match_parent"
-            android:layout_height="250sp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="225sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

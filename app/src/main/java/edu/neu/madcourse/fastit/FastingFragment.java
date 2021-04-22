@@ -129,13 +129,13 @@ public class FastingFragment extends Fragment {
                 end_time.setText(Html.fromHtml("End Time<br><b>"+endDay+" "+endTime+"</b>"));
                 end_time.setVisibility(View.VISIBLE);
                 updateCurrentStreak();
-                queueNotifications("Half way to end fasting",
+                queueNotifications("Half way to end fasting! You can do it",
                         Helpers.getTimeFromPercentage(System.currentTimeMillis(),
                                 endDate.getTime(), 50.0));
-                queueNotifications("Almost there to end fasting",
+                queueNotifications("Almost there to end fasting! Keep going",
                         Helpers.getTimeFromPercentage(System.currentTimeMillis(),
                                 endDate.getTime(), 75.0));
-                queueNotifications("Completed fasting",
+                queueNotifications("Completed fasting!",
                         Helpers.getTimeFromPercentage(System.currentTimeMillis(),
                                 endDate.getTime(), 100.0));
                 startTimer();

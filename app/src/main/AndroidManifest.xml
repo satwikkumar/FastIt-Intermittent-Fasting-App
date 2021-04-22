@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailedHistoryActivity"></activity>
+        <activity
+            android:name=".DetailedHistoryActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -40,10 +42,11 @@
         <activity
             android:name=".AdditionalInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".plan.PlanningInfoActivity"
-            android:theme="@style/NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -55,7 +58,8 @@
                 android:resource="@xml/file_list" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

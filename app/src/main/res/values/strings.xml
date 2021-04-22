@@ -20,9 +20,9 @@
     <string name="weight"><u>Weight</u></string>
     <string name="save_session">SAVE SESSION</string>
     <string name="delete_session">DELETE SESSION</string>
-    <string name="start_text">Start</string>
-    <string name="end_text">End</string>
-    <string name="session_completed">Session Completed:</string>
+    <string name="start_text">Start Time:</string>
+    <string name="end_text">End Time:</string>
+    <string name="session_completed">Session Completed?</string>
     <string name="weight_text">Weight:</string>
     <string name="water_info_1"><font size="18"><b>Why drink water during fasting?</b></font><font size="15">\n\nYour body consists of about 60% water.
     You hydrate the most from water-dense foods like fruits and vegetables when you eat.
