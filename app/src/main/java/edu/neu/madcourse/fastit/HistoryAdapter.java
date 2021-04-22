@@ -1,14 +1,18 @@
 package edu.neu.madcourse.fastit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +26,7 @@ import edu.neu.madcourse.fastit.plan.Helpers;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
 
+    private Context mContext;
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private CardView cardView;
@@ -69,8 +74,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     public List<FastingSession> fastingSessions;
 
-    public HistoryAdapter(List<FastingSession> sessions) {
+    public HistoryAdapter(List<FastingSession> sessions, Context context) {
         fastingSessions =  sessions;
+        mContext = context;
     }
 
     @NonNull
@@ -83,7 +89,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final HistoryAdapter.ViewHolder holder, int position) {
         FastingSession session = fastingSessions.get(position);
         holder.getStartDate().setText(Helpers.getFormattedDate(session.startTime));
         holder.getEndDate().setText(Helpers.getFormattedDate(session.endTime));
@@ -93,10 +99,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         if (bitmap!=null) {
             holder.getImageView().setImageBitmap(bitmap);
         }
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((DetailedHistoryActivity)mContext).enlargeImage(holder.imageView.getDrawable());
+                Log.e("Card Clicked",view.getId()+"");
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return fastingSessions.size();
     }
+
 }
