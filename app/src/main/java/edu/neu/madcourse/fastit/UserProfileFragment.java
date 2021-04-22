@@ -47,6 +47,7 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void loadCardData(View view){
+        if(sessionList.size()==0) return;
         FastingSession session = sessionList.get(sessionList.size()-1);
         CardView cardView = view.findViewById(R.id.history_cardView);
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +177,7 @@ public class UserProfileFragment extends Fragment {
 
         ArrayList<Entry> weights = new ArrayList<>();
         float lastKnownWeight = 0f;
-        if(sessionList.get(0).weight < 0){
+        if(sessionList.size()==0 || sessionList.get(0).weight < 0){
             weights.add(new Entry(0, 0));
         } else {
             lastKnownWeight = sessionList.get(0).weight;

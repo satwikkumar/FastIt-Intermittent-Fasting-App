@@ -28,7 +28,7 @@ public class PlanningInfoActivity extends Activity {
         double planHours = 0.0084;
         if(cycle.contains("-")){
             planHours = Double.parseDouble(cycle.split("-")[0]);
-        }
+        }  
         Date endDate = new Date();
         endDate.setTime(System.currentTimeMillis()+(long)(60*60*planHours*1000));
         String endTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(endDate);

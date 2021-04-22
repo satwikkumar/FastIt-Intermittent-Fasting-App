@@ -61,4 +61,10 @@ public class Helpers {
     public static String getFormattedDate(long time){
         return DateFormat.format("MM/dd hh:mm a", new Date(time)).toString();
     }
+
+    public static long getTimeFromPercentage(long now, long endTime, double percentage){
+        long duration = (endTime - now);
+        double rem =  ((percentage) / 100 );
+        return  (long) (rem * duration);
+    }
 }

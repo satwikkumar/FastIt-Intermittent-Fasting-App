@@ -15,7 +15,8 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:padding="10dp"
+        android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -24,7 +25,7 @@
         android:id="@+id/txtViewLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="268dp"
+        android:layout_marginTop="250dp"
         android:text="@string/txtDisplayFriends"
         android:textAlignment="center"
         android:textColor="#2196F3"
@@ -37,12 +38,11 @@
         android:id="@+id/rv_friendsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="150dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/txtViewLogin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_userName" />
 
@@ -50,15 +50,11 @@
         android:id="@+id/txt_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginEnd="186dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="60dp"
         android:text="@string/txt_userName"
         android:textColor="#982121"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/rv_friendsList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
