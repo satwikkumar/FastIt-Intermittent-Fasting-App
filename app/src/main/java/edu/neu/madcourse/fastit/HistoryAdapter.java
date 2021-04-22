@@ -3,6 +3,7 @@ package edu.neu.madcourse.fastit;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.getSessionCompleted().setText(session.hasCompletedSession ? "Yes" : "No");
         holder.getWeight().setText(session.weight + " KG");
         Bitmap bitmap = BitmapFactory.decodeFile(session.progressImagePath);
-        holder.getImageView().setImageBitmap(bitmap);
+        if (bitmap!=null) {
+            holder.getImageView().setImageBitmap(bitmap);
+        }
     }
 
     @Override
