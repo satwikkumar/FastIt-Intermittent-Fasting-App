@@ -148,7 +148,7 @@ public class LeaderboardFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                        int streak = preferenceManager.getIntPref(Constants.SP_CURRENT_LONGEST_STREAK);
+                        int streak = preferenceManager.getIntPref(Constants.SP_CURRENT_STREAK);
                         FbFriend currentUser = new FbFriend(preferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_NAME),
                                 Math.max(streak, 0),
                                 preferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_TOKEN));
@@ -168,6 +168,7 @@ public class LeaderboardFragment extends Fragment {
                         try {
                             String name= object.getString("name");
                             userName.setText(name);
+                            userName.setVisibility(View.VISIBLE);
                             preferenceManager.setStringPref(Constants.SP_LOGGED_IN_USER_NAME, name);
                         } catch (JSONException e) {
                             e.printStackTrace();
