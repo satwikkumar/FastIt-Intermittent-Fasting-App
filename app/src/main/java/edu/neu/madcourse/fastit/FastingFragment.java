@@ -253,9 +253,11 @@ public class FastingFragment extends Fragment {
 
                 @Override
                 public void onFinish() {
+                    if (TimerRunning){
+                        showCompleted();
+                    }
                     TimerRunning = false;
                     progressBar.setProgress(100);
-                    showCompleted();
                 }
             }.start();
         }
