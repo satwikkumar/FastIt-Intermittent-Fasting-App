@@ -190,13 +190,13 @@ public class FastingFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, System.currentTimeMillis());
                 endCurrentCycle();
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
         sharedPreferenceManager.setStringPref(Constants.SP_SHOW_NOTIFICATION, "No");
@@ -224,6 +224,7 @@ public class FastingFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               endCurrentCycle();
+              dialog.dismiss();
             }
         });
         builder.show();
