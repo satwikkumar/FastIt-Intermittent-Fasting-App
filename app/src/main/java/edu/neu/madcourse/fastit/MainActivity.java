@@ -91,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 101)
         {
+            if (grantResults.length == 0 ){
+                return;
+            }
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
                 initializeApp();

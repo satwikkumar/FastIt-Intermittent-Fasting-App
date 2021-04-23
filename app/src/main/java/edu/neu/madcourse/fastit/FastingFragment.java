@@ -108,37 +108,40 @@ public class FastingFragment extends Fragment {
         startFastingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                endFastingButton.setEnabled(true);
-                startFastingButton.setEnabled(false);
-                status.setText("You are fasting!");
-                status.setTextColor(Color.parseColor("#00ff00"));
-                long currentTime = System.currentTimeMillis();
-                sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_START_TIME,
-                        currentTime);
                 FastingCycle cycle = Helpers.getFastingCycleForNum(
                         sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));
-                sharedPreferenceManager.setLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME,
-                        (long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
-                Date endDate = new Date((long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
-                Date startDate = new Date();
-                String endTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(endDate);
-                String endDay = "Today, ";
-                if(startDate.getDate()!=endDate.getDate()){
-                    endDay = "Tomorrow, ";
+                if (cycle != FastingCycle.INVALID_CYCLE){
+                    endFastingButton.setEnabled(true);
+                    startFastingButton.setEnabled(false);
+                    status.setText("You are fasting!");
+                    status.setTextColor(Color.parseColor("#00ff00"));
+                    long currentTime = System.currentTimeMillis();
+                    sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_START_TIME,
+                            currentTime);
+                    sharedPreferenceManager.setLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME,
+                            (long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
+                    Date endDate = new Date((long) Helpers.getEndTimeFromStartTime(currentTime, cycle));
+                    Date startDate = new Date();
+                    String endTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(endDate);
+                    String endDay = "Today, ";
+                    if(startDate.getDate()!=endDate.getDate()){
+                        endDay = "Tomorrow, ";
+                    }
+                    end_time.setText(Html.fromHtml("End Time<br><b>"+endDay+" "+endTime+"</b>"));
+                    end_time.setVisibility(View.VISIBLE);
+                    queueNotifications("Half way to end fasting! You can do it",
+                            Helpers.getTimeFromPercentage(System.currentTimeMillis(),
+                                    endDate.getTime(), 50.0));
+                    queueNotifications("Almost there to end fasting! Keep going",
+                            Helpers.getTimeFromPercentage(System.currentTimeMillis(),
+                                    endDate.getTime(), 75.0));
+                    queueNotifications("Completed fasting!",
+                            Helpers.getTimeFromPercentage(System.currentTimeMillis(),
+                                    endDate.getTime(), 100.0));
+                    startTimer();
+                }else  {
+                    ((MainActivity)getActivity()).changeNavigationTab(R.id.action_plan);
                 }
-                end_time.setText(Html.fromHtml("End Time<br><b>"+endDay+" "+endTime+"</b>"));
-                end_time.setVisibility(View.VISIBLE);
-                updateCurrentStreak();
-                queueNotifications("Half way to end fasting! You can do it",
-                        Helpers.getTimeFromPercentage(System.currentTimeMillis(),
-                                endDate.getTime(), 50.0));
-                queueNotifications("Almost there to end fasting! Keep going",
-                        Helpers.getTimeFromPercentage(System.currentTimeMillis(),
-                                endDate.getTime(), 75.0));
-                queueNotifications("Completed fasting!",
-                        Helpers.getTimeFromPercentage(System.currentTimeMillis(),
-                                endDate.getTime(), 100.0));
-                startTimer();
             }
         });
         progressBar.setVisibility(View.VISIBLE);
@@ -225,7 +228,7 @@ public class FastingFragment extends Fragment {
         builder.setTitle("You have completed the fasting cycle!");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) { updateCurrentStreak();
               endCurrentCycle();
               dialog.dismiss();
             }
