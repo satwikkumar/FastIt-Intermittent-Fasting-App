@@ -134,6 +134,13 @@ public class UserProfileFragment extends Fragment {
         TextView longestStreakTextView = view.findViewById(R.id.longest_streak);
         longestStreakTextView.setText(longestStreakText.toString());
 
+        StringBuilder currentStreakText = new StringBuilder();
+        currentStreakText.append("Current Streak: ");
+        int currentStreak = preferenceManager.getIntPref(Constants.SP_CURRENT_STREAK);
+        currentStreakText.append(currentStreak > -1 ? currentStreak : 0);
+        TextView currentStreakTextView = view.findViewById(R.id.current_streak);
+        currentStreakTextView.setText(currentStreakText.toString());
+
         return view;
     }
 

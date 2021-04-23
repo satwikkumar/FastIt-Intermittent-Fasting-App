@@ -41,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="current streak"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
