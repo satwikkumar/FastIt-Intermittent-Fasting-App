@@ -34,6 +34,28 @@
                 android:layout_marginStart="10dp"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:id="@+id/current_streak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="current streak"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="5dp">
+
                 <TextView
                     android:id="@+id/longest_streak"
                     android:layout_width="match_parent"

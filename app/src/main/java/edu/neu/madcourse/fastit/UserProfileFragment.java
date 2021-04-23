@@ -128,7 +128,7 @@ public class UserProfileFragment extends Fragment {
 
         preferenceManager = new SharedPreferenceManager(getActivity());
         StringBuilder longestStreakText = new StringBuilder();
-        longestStreakText.append("Longest streak: ");
+        longestStreakText.append("Longest Streak: ");
         int longestStreak = preferenceManager.getIntPref(Constants.SP_LONGEST_STREAK);
         longestStreakText.append(longestStreak > -1 ? longestStreak : 0);
         TextView longestStreakTextView = view.findViewById(R.id.longest_streak);
