@@ -68,7 +68,9 @@ public class UserProfileFragment extends Fragment {
         weight.setText(session.weight+" KG");
         ImageView imageView = cardView.findViewById(R.id.session_thumbnail);
         Bitmap bitmap = BitmapFactory.decodeFile(session.progressImagePath);
-        imageView.setImageBitmap(bitmap);
+        if (bitmap!=null) {
+            imageView.setImageBitmap(bitmap);
+        }
     }
 
     private void fetchData(){

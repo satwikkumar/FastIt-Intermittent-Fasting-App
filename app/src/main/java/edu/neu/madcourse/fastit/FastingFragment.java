@@ -199,6 +199,7 @@ public class FastingFragment extends Fragment {
                 dialog.cancel();
             }
         });
+        sharedPreferenceManager.setStringPref(Constants.SP_SHOW_NOTIFICATION, "No");
         builder.show();
     }
 
@@ -325,6 +326,7 @@ public class FastingFragment extends Fragment {
     }
 
     private void queueNotifications(String text, long estimatedEndTime){
+            sharedPreferenceManager.setStringPref(Constants.SP_SHOW_NOTIFICATION, "Yes");
             CharSequence name = getActivity().getString(R.string.app_name);
             String description = getActivity().getString(R.string.app_name);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;

@@ -11,4 +11,5 @@ public class Constants {
     public static String SP_CURRENT_STREAK = "current_streak";
     public static String SP_LOGGED_IN_USER_TOKEN="logged_in_user_token";
     public static String SP_LOGGED_IN_USER_NAME="logged_in_user_name";
+    public static String SP_SHOW_NOTIFICATION = "show_notification";
 }
