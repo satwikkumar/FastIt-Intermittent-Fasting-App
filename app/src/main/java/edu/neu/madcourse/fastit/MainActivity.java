@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                             fragmentTransaction.replace(R.id.frameLayout, activeFragment).commit();
                         }
 
-                        return false;
+                        return true;
                     }
                 });
         FastingCycle cycle = Helpers.getFastingCycleForNum(sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE));

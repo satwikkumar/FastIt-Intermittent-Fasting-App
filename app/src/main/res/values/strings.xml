@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FastIt</string>
+    <string name="app_name">FastIt - Intermittent Fasting</string>
 
     <string name="text_fasting">Fasting</string>
     <string name="text_plan">Plan</string>
