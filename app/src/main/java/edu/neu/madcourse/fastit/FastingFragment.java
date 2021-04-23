@@ -201,6 +201,7 @@ public class FastingFragment extends Fragment {
             }
         });
         sharedPreferenceManager.setStringPref(Constants.SP_SHOW_NOTIFICATION, "No");
+        sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_STREAK, 0);
         builder.show();
     }
 
