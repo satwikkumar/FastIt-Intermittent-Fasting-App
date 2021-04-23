@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import edu.neu.madcourse.fastit.plan.Helpers;
@@ -236,11 +237,15 @@ public class AdditionalInfoActivity extends Activity {
     }
 
     private FastingSession getSessionObject(){
+        FastingSession previousSession = getLastSessionObject();
         FastingSession session = new FastingSession();
         int cycle = sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_FASTING_CYCLE);
         session.fastCycle = cycle > 0 ? cycle : 1 ;
         session.startTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
         session.endTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_END_TIME);
+        if(previousSession != null && weight == 0){
+            weight = previousSession.weight;
+        }
         session.weight = weight;
         session.progressImagePath = filePath;
         long estEndTime = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
@@ -263,6 +268,15 @@ public class AdditionalInfoActivity extends Activity {
                 AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
         FastingSessionDao fastingSessionDao = db.fastingSessionDao();
         fastingSessionDao.insertAll(session);
+    }
+
+    private FastingSession getLastSessionObject(){
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "fastit-database").allowMainThreadQueries().build();
+        FastingSessionDao fastingSessionDao = db.fastingSessionDao();
+        List<FastingSession> sessions = fastingSessionDao.getAllSessions();
+
+        return sessions.size() > 0 ? sessions.get(sessions.size()-1): null;
     }
 
     public void saveSession(View view){
