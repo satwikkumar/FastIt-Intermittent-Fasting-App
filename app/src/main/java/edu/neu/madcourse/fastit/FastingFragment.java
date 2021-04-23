@@ -175,6 +175,7 @@ public class FastingFragment extends Fragment {
 
     private void showAlert(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false);
         builder.setTitle("Are you sure you want to end the current fasting session?");
         long currentStartTime = sharedPreferenceManager.getLongPref(Constants.SP_CURRENT_FASTING_START_TIME);
         long approxEndTime = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
@@ -219,6 +220,7 @@ public class FastingFragment extends Fragment {
         long end = sharedPreferenceManager.getLongPref(Constants.SP_ESTIMATED_FASTING_END_TIME);
         sharedPreferenceManager.setLongPref(Constants.SP_CURRENT_FASTING_END_TIME, end);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false);
         builder.setTitle("You have completed the fasting cycle!");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

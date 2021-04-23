@@ -59,6 +59,7 @@ public class DetailedHistoryActivity extends AppCompatActivity {
 
     public void enlargeImage(Drawable image){
         final AlertDialog.Builder imageDialog = new AlertDialog.Builder(this);
+        imageDialog.setCancelable(false);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.fullimage_dialog, (ViewGroup)findViewById(R.id.layout_root));
         ImageView enlargedImage = (ImageView)layout.findViewById(R.id.fullimage);

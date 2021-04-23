@@ -94,6 +94,7 @@ public class AdditionalInfoActivity extends Activity {
 
     public void addNewUserWeight(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("Enter current weight");
 
         LinearLayout layout = new LinearLayout(this);
