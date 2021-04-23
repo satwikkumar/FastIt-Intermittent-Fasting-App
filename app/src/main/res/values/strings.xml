@@ -5,9 +5,6 @@
     <string name="text_plan">Plan</string>
     <string name="text_leaderboard">LeaderBoard</string>
     <string name="text_user_profile">User Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment_1">Hello blank fragment Leaderboard</string>
-    <string name="hello_blank_fragment_2">Hello blank fragment User Profile</string>
     <string name="plan_placeholder">12 hour fasting cycle</string>
     <string name="current_weight_placeholder">Current Weight</string>
     <string name="start_fasting">Start Fasting</string>
@@ -33,6 +30,6 @@
         \n\nIt should be fairly clear. If it\'s dark yellow, that\'s a sign you may need to drink more water.</font></string>
     <string name="fasting_info"><center><font size="18"><b>During Fasting</b></font></center><font size="15">\n\n• Drink water or herbal tea to stay hydrated.
         \n\n• Keep your mind off food.\n\n• Avoid high-intensity workouts.</font></string>
-    <string name="txtDisplayFriends">Login with Facebook to view friends score!</string>
+    <string name="txtDisplayFriends">Login with Facebook to view the current streaks of your friends!</string>
     <string name="txt_userName">My Name</string>
 </resources>

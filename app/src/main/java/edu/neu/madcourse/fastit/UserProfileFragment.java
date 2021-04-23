@@ -35,6 +35,7 @@ public class UserProfileFragment extends Fragment {
 
     private LineChart chart;
     private List<FastingSession> sessionList;
+    private SharedPreferenceManager preferenceManager;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -124,6 +125,14 @@ public class UserProfileFragment extends Fragment {
         setData();
 
         loadCardData(view);
+
+        preferenceManager = new SharedPreferenceManager(getActivity());
+        StringBuilder longestStreakText = new StringBuilder();
+        longestStreakText.append("Longest streak: ");
+        int longestStreak = preferenceManager.getIntPref(Constants.SP_LONGEST_STREAK);
+        longestStreakText.append(longestStreak > -1 ? longestStreak : 0);
+        TextView longestStreakTextView = view.findViewById(R.id.longest_streak);
+        longestStreakTextView.setText(longestStreakText.toString());
 
         return view;
     }

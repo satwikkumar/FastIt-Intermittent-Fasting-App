@@ -287,7 +287,7 @@ public class FastingFragment extends Fragment {
     }
 
     private void updateCurrentStreak(){
-        int currentStreak = sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_LONGEST_STREAK);
+        int currentStreak = sharedPreferenceManager.getIntPref(Constants.SP_CURRENT_STREAK);
         if (currentStreak == -1){
             currentStreak = 1;
         } else {
@@ -305,7 +305,11 @@ public class FastingFragment extends Fragment {
                 }
             }
         }
-        sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_LONGEST_STREAK, currentStreak);
+        sharedPreferenceManager.setIntPref(Constants.SP_CURRENT_STREAK, currentStreak);
+        int longestStreak = sharedPreferenceManager.getIntPref(Constants.SP_LONGEST_STREAK);
+        if (longestStreak < currentStreak){
+            sharedPreferenceManager.setIntPref(Constants.SP_LONGEST_STREAK, currentStreak);
+        }
         String userToken = sharedPreferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_TOKEN);
         if(userToken.length() > 0){
           String userName = sharedPreferenceManager.getStringPref(Constants.SP_LOGGED_IN_USER_NAME);
